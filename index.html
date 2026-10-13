@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> ECHO BHARAT — From Complaints to Evidence</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        civic:{50:'#f0fdfa',100:'#ccfbf1',200:'#99f6e4',300:'#5eead4',400:'#2dd4bf',500:'#14b8a6',600:'#0d9488',700:'#0f766e',800:'#115e59',900:'#134e4a'},
+        navy:{800:'#1a1a2e',900:'#0f0f23'},
+        unver:'#ef4444',corrob:'#f59e0b',evback:'#10b981',resol:'#3b82f6'
+      },
+      fontFamily:{heading:['Space Grotesk','sans-serif'],body:['Inter','sans-serif'],mono:['JetBrains Mono','monospace']}
+    }
+  }
+}
+</script>
+<style>
+:root{--bg:#f8fafb;--fg:#1a1a2e;--muted:#64748b;--accent:#0d9488;--card:#ffffff;--border:#e2e8f0;--card-shadow:0 1px 3px rgba(0,0,0,.06),0 1px 2px rgba(0,0,0,.04);--card-shadow-lg:0 10px 25px rgba(0,0,0,.08),0 4px 10px rgba(0,0,0,.04);--unver:#ef4444;--corrob:#f59e0b;--evback:#10b981;--resol:#3b82f6}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--fg);overflow-x:hidden}h1,h2,h3,h4,h5{font-family:'Space Grotesk',sans-serif}.mono{font-family:'JetBrains Mono',monospace}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 20px rgba(13,148,136,.3)}50%{box-shadow:0 0 40px rgba(13,148,136,.6)}}
+@keyframes statusPulse{0%,100%{opacity:1}50%{opacity:.6}}
+@keyframes gradientShift{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+@keyframes chatBounce{0%,100%{transform:scale(1)}50%{transform:scale(1.15)}}
+.animate-fadeUp{animation:fadeUp .7s ease forwards}.animate-fadeIn{animation:fadeIn .5s ease forwards}.animate-float{animation:float 3s ease-in-out infinite}
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.16,1,.3,1)}.reveal.visible{opacity:1;transform:translateY(0)}
+.ticker-track{display:flex;animation:ticker 20s linear infinite;white-space:nowrap}
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:9999px;font-size:.75rem;font-weight:600;font-family:'JetBrains Mono',monospace}
+.badge-unver{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}.badge-corrob{background:#fffbeb;color:#d97706;border:1px solid #fde68a}.badge-evback{background:#ecfdf5;color:#059669;border:1px solid #a7f3d0}.badge-resol{background:#eff6ff;color:#2563eb;border:1px solid #bfdbfe}
+.civic-card{background:var(--card);border:1px solid var(--border);border-radius:12px;box-shadow:var(--card-shadow);transition:box-shadow .3s,transform .3s}.civic-card:hover{box-shadow:var(--card-shadow-lg);transform:translateY(-2px)}
+.btn-civic{background:linear-gradient(135deg,#0d9488,#0f766e);color:white;padding:12px 28px;border-radius:8px;font-weight:600;border:none;cursor:pointer;transition:all .3s;font-family:'Space Grotesk',sans-serif}.btn-civic:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(13,148,136,.3)}
+.btn-outline{background:transparent;color:var(--accent);padding:12px 28px;border-radius:8px;font-weight:600;border:2px solid var(--accent);cursor:pointer;transition:all .3s;font-family:'Space Grotesk',sans-serif}.btn-outline:hover{background:var(--accent);color:white;transform:translateY(-2px)}
+.section{padding:80px 0}@media(max-width:768px){.section{padding:50px 0}}
+*:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.ticker-track{animation:none}}
+.step-log{max-height:300px;overflow-y:auto;scroll-behavior:smooth}.step-entry{padding:8px 12px;border-left:3px solid var(--accent);margin-bottom:6px;background:#f0fdfa;border-radius:0 6px 6px 0;font-size:.85rem}
+.map-pin{width:28px;height:28px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);position:absolute;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.2)}.map-pin span{transform:rotate(45deg);font-size:11px;font-weight:700;color:white}
+.toast{position:fixed;bottom:24px;right:24px;padding:14px 24px;border-radius:10px;color:white;font-weight:500;z-index:9999;transform:translateY(100px);opacity:0;transition:all .4s}.toast.show{transform:translateY(0);opacity:1}
+.nav-glass{background:rgba(248,250,251,.88);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+.gradient-text{background:linear-gradient(135deg,#0d9488,#2dd4bf,#0f766e);background-size:200% 200%;animation:gradientShift 4s ease infinite;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* Hero 3D */
+.hero-3d-wrap{position:relative;width:100%;height:100%;min-height:480px}
+.hero-3d-wrap canvas{display:block;width:100%!important;height:100%!important}
+/* City 3D */
+#city-3d{display:block;width:100%;height:450px;border-radius:12px}
+/* Chatbot */
+.chat-btn{position:fixed;bottom:24px;left:24px;width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,#0d9488,#2dd4bf);color:white;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 4px 20px rgba(13,148,136,.4);z-index:9998;transition:all .3s;border:none;font-size:20px}.chat-btn:hover{transform:scale(1.1);box-shadow:0 6px 30px rgba(13,148,136,.5)}
+.chat-btn .chat-dot{position:absolute;top:6px;right:6px;width:10px;height:10px;background:#ef4444;border-radius:50%;border:2px solid white;animation:chatBounce 2s infinite}
+.chat-panel{position:fixed;bottom:90px;left:24px;width:360px;max-height:520px;background:white;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.15);z-index:9997;display:none;flex-direction:column;overflow:hidden;border:1px solid #e2e8f0}
+.chat-panel.open{display:flex}
+.chat-header{background:linear-gradient(135deg,#0d9488,#0f766e);color:white;padding:16px;display:flex;align-items:center;gap:10px}
+.chat-header img{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.3)}
+.chat-messages{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;max-height:350px;min-height:200px}
+.chat-msg{max-width:85%;padding:10px 14px;border-radius:12px;font-size:.875rem;line-height:1.5;animation:fadeUp .3s ease}
+.chat-msg.bot{background:#f0fdfa;color:#1a1a2e;align-self:flex-start;border-bottom-left-radius:4px}
+.chat-msg.user{background:linear-gradient(135deg,#0d9488,#0f766e);color:white;align-self:flex-end;border-bottom-right-radius:4px}
+.chat-input-area{padding:12px;border-top:1px solid #e2e8f0;display:flex;gap:8px}.chat-input-area input{flex:1;border:1px solid #e2e8f0;border-radius:8px;padding:8px 12px;font-size:.875rem;outline:none}.chat-input-area input:focus{border-color:#0d9488;box-shadow:0 0 0 2px rgba(13,148,136,.15)}.chat-input-area button{background:#0d9488;color:white;border:none;border-radius:8px;padding:8px 14px;cursor:pointer;transition:all .2s}.chat-input-area button:hover{background:#0f766e}
+/* Flowchart */
+.flow-step{position:relative;padding:16px 20px;border-radius:10px;text-align:center;font-size:.85rem;transition:all .3s}.flow-step:hover{transform:scale(1.03)}
+.flow-arrow{display:flex;align-items:center;justify-content:center;color:#0d9488;font-size:1.2rem}
+/* Supabase */
+.sb-panel{background:linear-gradient(135deg,#1a1a2e,#0f0f23);color:white;border-radius:16px;overflow:hidden}
+.sb-status-dot{width:8px;height:8px;border-radius:50%;display:inline-block}
+/* Photo cards */
+.photo-card{position:relative;overflow:hidden;border-radius:12px;aspect-ratio:4/3}.photo-card img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.photo-card:hover img{transform:scale(1.05)}.photo-card .overlay{position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.65),transparent 60%);display:flex;align-items:flex-end;padding:16px;opacity:0;transition:opacity .3s}.photo-card:hover .overlay{opacity:1}
+/* Project-specific illustrations */
+.civic-illust{background:linear-gradient(135deg,#f0fdfa,#ccfbf1);border:1px solid #99f6e4;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}
+</style>
+</head>
+<body>
+
+<div id="toast" class="toast bg-civic-700"></div>
+
+<!-- NAVBAR -->
+<nav class="nav-glass fixed top-0 left-0 right-0 z-50" role="navigation" aria-label="Main navigation">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
+    <a href="#hero" class="flex items-center gap-2 font-heading font-bold text-lg text-navy-800">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><circle cx="14" cy="14" r="12" stroke="#0d9488" stroke-width="2.5"/><circle cx="14" cy="14" r="5" fill="#0d9488"/><path d="M14 2v6M14 20v6M2 14h6M20 14h6" stroke="#0d9488" stroke-width="2" stroke-linecap="round"/></svg>
+      ECHO BHARAT
+    </a>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
+      <a href="#problem" class="hover:text-civic-700 transition">Problem</a>
+      <a href="#paradigm" class="hover:text-civic-700 transition">Paradigm</a>
+      <a href="#solution" class="hover:text-civic-700 transition">Solution</a>
+      <a href="#dashboard" class="hover:text-civic-700 transition">Dashboard</a>
+      <a href="#demo" class="hover:text-civic-700 transition">Live Demo</a>
+      <a href="#report" class="btn-civic text-sm !py-2 !px-5">Report an Issue</a>
+    </div>
+    <button id="mobileMenuBtn" class="md:hidden p-2 text-slate-600" aria-label="Toggle menu"><i class="fas fa-bars text-xl"></i></button>
+  </div>
+  <div id="mobileMenu" class="md:hidden hidden border-t border-slate-200 bg-white/95 px-4 py-4">
+    <div class="flex flex-col gap-3 text-sm font-medium text-slate-600">
+      <a href="#problem" class="hover:text-civic-700">Problem</a><a href="#paradigm" class="hover:text-civic-700">Paradigm</a><a href="#solution" class="hover:text-civic-700">Solution</a><a href="#dashboard" class="hover:text-civic-700">Dashboard</a><a href="#demo" class="hover:text-civic-700">Live Demo</a><a href="#report" class="btn-civic text-sm text-center mt-2">Report an Issue</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section id="hero" class="relative min-h-screen flex items-center overflow-hidden" style="background:linear-gradient(160deg,#f0fdfa 0%,#f8fafb 40%,#eff6ff 100%);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-16 w-full grid lg:grid-cols-2 gap-8 items-center relative z-10">
+    <div>
+      <p class="mono text-civic-700 text-sm tracking-widest mb-4 animate-fadeIn" style="animation-delay:.2s">Don't just count complaints. Find the problems behind them.</p>
+      <h1 class="font-heading font-bold text-5xl sm:text-6xl lg:text-7xl leading-tight mb-4 animate-fadeUp">
+        CIVIC<br><span class="gradient-text">ACCOUNTABILITY</span>
+      </h1>
+      <p class="font-heading text-xl sm:text-2xl text-slate-600 mb-3 animate-fadeUp" style="animation-delay:.3s">From Complaints to Evidence</p>
+      <p class="text-slate-500 mb-8 max-w-lg animate-fadeUp" style="animation-delay:.35s">An AI-assisted civic issue verification system that transforms isolated complaints into corroborated, evidence-backed accountability.</p>
+      <div class="flex flex-wrap gap-4 animate-fadeUp" style="animation-delay:.5s">
+        <a href="#demo" class="btn-civic"><i class="fas fa-play mr-2"></i>Explore the Demo</a>
+        <a href="#dashboard" class="btn-outline"><i class="fas fa-chart-line mr-2"></i>Dashboard</a>
+        <a href="#report" class="btn-outline !border-slate-400 !text-slate-600 hover:!bg-slate-600 hover:!text-white"><i class="fas fa-flag mr-2"></i>Report</a>
+      </div>
+    </div>
+    <!-- Right: 3D Canvas -->
+    <div class="hero-3d-wrap animate-fadeIn" style="animation-delay:.4s" id="hero3dContainer">
+      <canvas id="hero-3d"></canvas>
+    </div>
+  </div>
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 animate-fadeIn" style="animation-delay:.8s">
+    <div class="flex flex-col items-center"><p class="mono text-xs text-slate-400 tracking-wider mb-1">SCROLL</p><div class="w-5 h-8 border-2 border-slate-400 rounded-full flex justify-center"><div class="w-1 h-2 bg-civic-600 rounded-full mt-1 animate-float"></div></div></div>
+  </div>
+</section>
+
+<!-- ===== PROJECT PHOTOS ===== -->
+<section class="py-8 bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <p class="mono text-xs text-civic-700 tracking-widest mb-4 text-center">CIVIC ISSUES IN THE REAL WORLD</p>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="photo-card">
+        <svg viewBox="0 0 400 300" class="w-full h-full" style="background:#1a1a2e">
+          <rect width="400" height="300" fill="#1a1a2e"/>
+          <rect x="160" y="40" width="12" height="180" rx="2" fill="#64748b"/>
+          <rect x="155" y="40" width="22" height="8" rx="2" fill="#94a3b8"/>
+          <circle cx="166" cy="35" r="8" fill="#1a1a2e" stroke="#f59e0b" stroke-width="2"/>
+          <line x1="166" y1="35" x2="166" y2="27" stroke="#f59e0b" stroke-width="1.5"/>
+          <text x="166" y="18" text-anchor="middle" fill="#ef4444" font-size="11" font-weight="bold">OFF</text>
+          <rect x="0" y="220" width="400" height="80" fill="#334155"/>
+          <rect x="80" y="230" width="60" height="60" fill="#1a1a2e" opacity="0.3"/>
+          <rect x="180" y="235" width="50" height="50" fill="#1a1a2e" opacity="0.3"/>
+          <circle cx="166" cy="230" r="15" fill="none" stroke="#ef4444" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="200" y="280" fill="#94a3b8" font-size="10">Broken Streetlight</text>
+        </svg>
+        <div class="overlay"><p class="text-white font-heading font-semibold text-sm"><i class="fas fa-lightbulb mr-1"></i>Broken Streetlight — No Light</p></div>
+      </div>
+      <div class="photo-card">
+        <svg viewBox="0 0 400 300" class="w-full h-full" style="background:#475569">
+          <rect width="400" height="300" fill="#475569"/>
+          <rect x="0" y="100" width="400" height="200" fill="#64748b"/>
+          <line x1="0" y1="200" x2="400" y2="200" stroke="#fbbf24" stroke-width="2" stroke-dasharray="20 10"/>
+          <ellipse cx="200" cy="170" rx="40" ry="15" fill="#1a1a2e"/>
+          <ellipse cx="200" cy="170" rx="35" ry="12" fill="#0f0f23"/>
+          <ellipse cx="200" cy="170" rx="40" ry="15" fill="none" stroke="#854d0e" stroke-width="2"/>
+          <ellipse cx="320" cy="220" rx="25" ry="10" fill="#1a1a2e"/>
+          <ellipse cx="320" cy="220" rx="20" ry="7" fill="#0f0f23"/>
+          <ellipse cx="320" cy="220" rx="25" ry="10" fill="none" stroke="#854d0e" stroke-width="2"/>
+          <circle cx="200" cy="170" r="25" fill="none" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.6"/>
+          <text x="200" y="280" text-anchor="middle" fill="#cbd5e1" font-size="10">Road Potholes</text>
+        </svg>
+        <div class="overlay"><p class="text-white font-heading font-semibold text-sm"><i class="fas fa-road mr-1"></i>Pothole — Road Surface Damage</p></div>
+      </div>
+      <div class="photo-card">
+        <svg viewBox="0 0 400 300" class="w-full h-full" style="background:#0f172a">
+          <rect width="400" height="300" fill="#0f172a"/>
+          <rect x="0" y="220" width="400" height="80" fill="#1e293b"/>
+          <rect x="40" y="60" width="80" height="160" fill="#334155" rx="3"/>
+          <rect x="55" y="80" width="20" height="15" fill="#fde68a" opacity="0.7"/>
+          <rect x="85" y="80" width="20" height="15" fill="#fde68a" opacity="0.4"/>
+          <rect x="55" y="110" width="20" height="15" fill="#fde68a" opacity="0.5"/>
+          <rect x="85" y="110" width="20" height="15" fill="#1a1a2e"/>
+          <rect x="55" y="140" width="20" height="15" fill="#fde68a" opacity="0.3"/>
+          <rect x="280" y="80" width="90" height="140" fill="#334155" rx="3"/>
+          <rect x="295" y="100" width="20" height="15" fill="#1a1a2e"/>
+          <rect x="325" y="100" width="20" height="15" fill="#1a1a2e"/>
+          <rect x="295" y="130" width="20" height="15" fill="#1a1a2e"/>
+          <rect x="325" y="130" width="20" height="15" fill="#1a1a2e"/>
+          <circle cx="200" cy="150" r="30" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.5"/>
+          <text x="200" y="155" text-anchor="middle" fill="#f59e0b" font-size="9" font-weight="bold">DARK ZONE</text>
+          <text x="200" y="280" text-anchor="middle" fill="#94a3b8" font-size="10">Unlit Street — Safety Hazard</text>
+        </svg>
+        <div class="overlay"><p class="text-white font-heading font-semibold text-sm"><i class="fas fa-moon mr-1"></i>Unlit Street — Safety Hazard</p></div>
+      </div>
+      <div class="photo-card">
+        <svg viewBox="0 0 400 300" class="w-full h-full" style="background:#f0fdfa">
+          <rect width="400" height="300" fill="#f0fdfa"/>
+          <circle cx="200" cy="120" r="40" fill="#ccfbf1" stroke="#0d9488" stroke-width="2"/>
+          <circle cx="200" cy="120" r="5" fill="#0d9488"/>
+          <line x1="200" y1="80" x2="200" y2="65" stroke="#0d9488" stroke-width="2"/>
+          <line x1="240" y1="120" x2="255" y2="120" stroke="#0d9488" stroke-width="2"/>
+          <line x1="160" y1="120" x2="145" y2="120" stroke="#0d9488" stroke-width="2"/>
+          <line x1="228" y1="92" x2="238" y2="82" stroke="#0d9488" stroke-width="2"/>
+          <line x1="172" y1="92" x2="162" y2="82" stroke="#0d9488" stroke-width="2"/>
+          <rect x="130" y="180" width="140" height="50" rx="8" fill="#0d9488"/>
+          <text x="200" y="210" text-anchor="middle" fill="white" font-size="13" font-weight="bold">REPORT</text>
+          <circle cx="100" cy="200" r="15" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+          <text x="100" y="204" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="bold">U1</text>
+          <circle cx="300" cy="200" r="15" fill="#ecfdf5" stroke="#10b981" stroke-width="1.5"/>
+          <text x="300" y="204" text-anchor="middle" fill="#10b981" font-size="10" font-weight="bold">U4</text>
+          <line x1="115" y1="200" x2="130" y2="200" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 2"/>
+          <line x1="270" y1="200" x2="285" y2="200" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 2"/>
+          <text x="200" y="270" text-anchor="middle" fill="#0f766e" font-size="10">Citizen Reporting Flow</text>
+        </svg>
+        <div class="overlay"><p class="text-white font-heading font-semibold text-sm"><i class="fas fa-users mr-1"></i>Citizen Reporting Flow</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROBLEM ===== -->
+<section id="problem" class="section" style="background:linear-gradient(180deg,#fff,#f8fafb);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-unver tracking-widest mb-2">02 — THE PROBLEM</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-4">Civic Data is Fragmented</h2><p class="text-lg text-slate-600 max-w-3xl mb-8">Traditional complaint systems are just digital suggestion boxes that collect thousands of isolated reports.</p></div>
+    <div class="overflow-hidden border-y border-slate-200 py-3 mb-8 reveal" style="transition-delay:.1s"><div class="ticker-track mono text-sm"><span class="mx-6 text-unver font-semibold">DUPLICATES_IGNORED</span><span class="mx-6 text-slate-300">/</span><span class="mx-6 text-corrob font-semibold">TRENDS_MISSED</span><span class="mx-6 text-slate-300">/</span><span class="mx-6 text-slate-700 font-semibold">ROOT_CAUSES_HIDDEN</span><span class="mx-6 text-slate-300">/</span><span class="mx-6 text-unver font-semibold">DUPLICATES_IGNORED</span><span class="mx-6 text-slate-300">/</span><span class="mx-6 text-corrob font-semibold">TRENDS_MISSED</span><span class="mx-6 text-slate-300">/</span><span class="mx-6 text-slate-700 font-semibold">ROOT_CAUSES_HIDDEN</span><span class="mx-6 text-slate-300">/</span><span class="mx-6 text-unver font-semibold">DUPLICATES_IGNORED</span><span class="mx-6 text-slate-300">/</span><span class="mx-6 text-corrob font-semibold">TRENDS_MISSED</span><span class="mx-6 text-slate-300">/</span><span class="mx-6 text-slate-700 font-semibold">ROOT_CAUSES_HIDDEN</span></div></div>
+    <p class="font-heading font-semibold text-xl text-navy-800 mb-10 reveal" style="transition-delay:.15s">"Fragmented complaints make it mathematically difficult to identify and prioritize recurring civic problems."</p>
+    <div class="relative min-h-[280px] reveal" style="transition-delay:.2s">
+      <div class="absolute top-4 left-[5%] bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-2xl rounded-bl-sm text-sm font-medium shadow-sm">"It's dark here"</div>
+      <div class="absolute top-12 left-[22%] bg-amber-50 border border-amber-200 text-amber-700 px-4 py-2 rounded-2xl rounded-bl-sm text-sm font-medium shadow-sm">"Can't see the road"</div>
+      <div class="absolute top-2 left-[42%] bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-2xl rounded-bl-sm text-sm font-medium shadow-sm">"Streetlight out"</div>
+      <div class="absolute top-16 left-[60%] bg-amber-50 border border-amber-200 text-amber-700 px-4 py-2 rounded-2xl rounded-bl-sm text-sm font-medium shadow-sm">"Broken fixture"</div>
+      <div class="absolute top-6 left-[78%] bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-2xl rounded-bl-sm text-sm font-medium shadow-sm">"Safety hazard"</div>
+      <div class="absolute top-28 left-[12%] bg-amber-50 border border-amber-200 text-amber-700 px-4 py-2 rounded-2xl rounded-bl-sm text-sm font-medium shadow-sm">"Lamp post damaged"</div>
+      <div class="absolute top-32 left-[48%] bg-red-50 border border-red-200 text-red-700 px-4 py-2 rounded-2xl rounded-bl-sm text-sm font-medium shadow-sm">"Unlit street"</div>
+      <div class="absolute top-44 left-[30%] bg-slate-100 border border-slate-200 text-slate-400 px-4 py-2 rounded-2xl rounded-bl-sm text-sm mono shadow-sm">"..."</div>
+      <div class="absolute top-52 left-1/2 -translate-x-1/2 flex flex-col items-center"><i class="fas fa-arrow-down text-civic-600 text-xl mb-1"></i><div class="bg-civic-600 text-white px-5 py-2 rounded-lg font-heading font-semibold text-sm shadow-lg" style="animation:pulseGlow 2s infinite">1 Problem: Streetlight Failure</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PARADIGM SHIFT ===== -->
+<section id="paradigm" class="section bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">03 — THE PARADIGM SHIFT</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-6">Rethinking What a Complaint Means</h2></div>
+    <div class="text-center mb-10 reveal" style="transition-delay:.1s"><p class="text-lg text-slate-500 mb-2">Old model:</p><p class="font-heading text-2xl text-slate-400 line-through decoration-red-400 decoration-2">A Complaint = A Problem</p><p class="text-lg text-slate-500 mt-4 mb-2">Our insight:</p><p class="font-heading text-2xl sm:text-3xl text-navy-800 font-bold">A Complaint = An <span class="gradient-text">Allegation</span></p></div>
+    <div class="grid md:grid-cols-3 gap-6 mb-10">
+      <div class="civic-card p-6 border-t-4 border-t-red-400 reveal" style="transition-delay:.15s"><div class="badge badge-unver mb-3"><i class="fas fa-exclamation-circle"></i> ALLEGATION</div><h3 class="font-heading font-semibold text-lg text-navy-800 mb-2">The Allegation</h3><p class="text-slate-600 text-sm">A single user report is just a starting point and is inherently unverified.</p></div>
+      <div class="civic-card p-6 border-t-4 border-t-amber-400 reveal" style="transition-delay:.25s"><div class="badge badge-corrob mb-3"><i class="fas fa-users"></i> CORROBORATION</div><h3 class="font-heading font-semibold text-lg text-navy-800 mb-2">The Corroboration</h3><p class="text-slate-600 text-sm">Independent observations from distinct users act as corroborating witnesses.</p></div>
+      <div class="civic-card p-6 border-t-4 border-t-emerald-400 reveal" style="transition-delay:.35s"><div class="badge badge-evback mb-3"><i class="fas fa-check-circle"></i> VERIFICATION</div><h3 class="font-heading font-semibold text-lg text-navy-800 mb-2">The Verification</h3><p class="text-slate-600 text-sm">Objective supporting evidence (photos, metadata) transforms the allegation into a corroborated civic issue.</p></div>
+    </div>
+    <div class="bg-navy-800 text-white rounded-xl p-6 text-center reveal" style="transition-delay:.4s"><p class="font-heading font-semibold text-lg sm:text-xl tracking-wide">"We are not building a truth detector. We are building an evidence engine."</p></div>
+  </div>
+</section>
+
+<!-- ===== ACCOUNTABILITY LAYER ===== -->
+<section id="solution" class="section" style="background:linear-gradient(180deg,#f8fafb,#f0fdfa);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">04 — THE SOLUTION</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-2">An Accountability Layer</h2><p class="text-slate-600 mb-10">Not a generic portal. Not a government database. An AI-assisted civic issue verification system.</p></div>
+    <div class="grid lg:grid-cols-4 gap-4 reveal" style="transition-delay:.1s">
+      <div class="civic-card p-5 border-l-4 border-l-civic-600"><div class="flex items-center gap-2 mb-3"><div class="w-9 h-9 bg-civic-100 rounded-lg flex items-center justify-center"><i class="fas fa-pen-to-square text-civic-700"></i></div><h3 class="font-heading font-semibold text-sm text-civic-700 mono">INPUT</h3></div><p class="font-semibold text-navy-800 mb-1">Citizen Report</p><p class="text-xs text-slate-500">User submits complaint with description, location, and optional evidence.</p></div>
+      <div class="civic-card p-5 border-l-4 border-l-amber-400"><div class="flex items-center gap-2 mb-3"><div class="w-9 h-9 bg-amber-50 rounded-lg flex items-center justify-center"><i class="fas fa-microchip text-amber-600"></i></div><h3 class="font-heading font-semibold text-sm text-amber-600 mono">PROCESSING (AI)</h3></div><p class="font-semibold text-navy-800 mb-1">AI Extraction &rarr; Similarity &rarr; Clustering</p><p class="text-xs text-slate-500">NLP extracts category, location, time. Similarity detection groups related reports.</p></div>
+      <div class="civic-card p-5 border-l-4 border-l-emerald-400"><div class="flex items-center gap-2 mb-3"><div class="w-9 h-9 bg-emerald-50 rounded-lg flex items-center justify-center"><i class="fas fa-shield-halved text-emerald-600"></i></div><h3 class="font-heading font-semibold text-sm text-emerald-600 mono">VALIDATION</h3></div><p class="font-semibold text-navy-800 mb-1">Corroboration &rarr; Evidence Uploads</p><p class="text-xs text-slate-500">Independent reporters and objective evidence validate the issue cluster.</p></div>
+      <div class="civic-card p-5 border-l-4 border-l-blue-400"><div class="flex items-center gap-2 mb-3"><div class="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center"><i class="fas fa-flag-checkered text-blue-600"></i></div><h3 class="font-heading font-semibold text-sm text-blue-600 mono">OUTPUT</h3></div><p class="font-semibold text-navy-800 mb-1">Status &rarr; Action &rarr; Resolution</p><p class="text-xs text-slate-500">Deterministic status assignment, action tracking, and post-resolution citizen check.</p></div>
+    </div>
+    <div class="hidden lg:flex items-center justify-center mt-4 gap-2 text-civic-400 reveal"><div class="flex-1 h-0.5 bg-gradient-to-r from-civic-400 to-amber-400 rounded"></div><i class="fas fa-chevron-right text-amber-400 text-xs"></i><div class="flex-1 h-0.5 bg-gradient-to-r from-amber-400 to-emerald-400 rounded"></div><i class="fas fa-chevron-right text-emerald-400 text-xs"></i><div class="flex-1 h-0.5 bg-gradient-to-r from-emerald-400 to-blue-400 rounded"></div></div>
+  </div>
+</section>
+
+<!-- ===== FLOWCHART ===== -->
+<section id="flowchart" class="section bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">PIPELINE FLOWCHART</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-10">End-to-End Verification Pipeline</h2></div>
+    <div class="reveal" style="transition-delay:.1s">
+      <div class="hidden md:flex items-center gap-2 overflow-x-auto pb-4">
+        <div class="flow-step bg-red-50 border-2 border-red-200 text-red-700 font-semibold min-w-[140px]"><i class="fas fa-pen block text-lg mb-1"></i>Citizen Report</div>
+        <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="flow-step border-2 min-w-[170px]" style="background:#EAF2FC;border-color:#7295BC"><i class="fas fa-robot block text-lg mb-1 text-blue-600"></i><span class="font-semibold">AI extracts + categorizes</span></div>
+        <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="flow-step bg-purple-50 border-2 border-purple-200 text-purple-700 min-w-[150px]"><i class="fas fa-link block text-lg mb-1"></i><span class="font-semibold">Similarity Detection</span></div>
+        <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="flow-step bg-amber-50 border-2 border-amber-200 text-amber-700 min-w-[140px]"><i class="fas fa-object-group block text-lg mb-1"></i><span class="font-semibold">Issue Clustering</span></div>
+        <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="flow-step bg-civic-50 border-2 border-civic-200 text-civic-700 min-w-[150px]"><i class="fas fa-user-check block text-lg mb-1"></i><span class="font-semibold">Independence Check</span></div>
+        <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="flow-step bg-emerald-50 border-2 border-emerald-200 text-emerald-700 min-w-[150px]"><i class="fas fa-camera block text-lg mb-1"></i><span class="font-semibold">Evidence Validation</span></div>
+        <div class="flow-arrow"><i class="fas fa-arrow-right"></i></div>
+        <div class="flow-step bg-navy-800 text-white border-2 border-navy-800 min-w-[140px]"><i class="fas fa-flag-checkered block text-lg mb-1"></i><span class="font-semibold">Status Assigned</span></div>
+      </div>
+      <div class="md:hidden space-y-2">
+        <div class="flow-step bg-red-50 border-2 border-red-200 text-red-700 font-semibold"><i class="fas fa-pen mr-2"></i>Citizen Report</div><div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+        <div class="flow-step border-2" style="background:#EAF2FC;border-color:#7295BC"><i class="fas fa-robot mr-2 text-blue-600"></i><span class="font-semibold">AI extracts + categorizes</span></div><div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+        <div class="flow-step bg-purple-50 border-2 border-purple-200 text-purple-700"><i class="fas fa-link mr-2"></i>Similarity Detection</div><div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+        <div class="flow-step bg-amber-50 border-2 border-amber-200 text-amber-700"><i class="fas fa-object-group mr-2"></i>Issue Clustering</div><div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+        <div class="flow-step bg-civic-50 border-2 border-civic-200 text-civic-700"><i class="fas fa-user-check mr-2"></i>Independence Check</div><div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+        <div class="flow-step bg-emerald-50 border-2 border-emerald-200 text-emerald-700"><i class="fas fa-camera mr-2"></i>Evidence Validation</div><div class="flow-arrow"><i class="fas fa-arrow-down"></i></div>
+        <div class="flow-step bg-navy-800 text-white border-2 border-navy-800"><i class="fas fa-flag-checkered mr-2"></i>Status Assigned</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VOLUME VS INDEPENDENCE ===== -->
+<section id="innovation" class="section" style="background:linear-gradient(180deg,#f0fdfa,#f8fafb);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">05 — KEY INNOVATION</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-10">Volume vs. Independence</h2></div>
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="civic-card p-6 reveal" style="transition-delay:.1s"><h3 class="font-heading font-semibold text-lg text-red-600 mb-4"><i class="fas fa-copy mr-2"></i>Duplicate Reports</h3><div class="space-y-3 mb-4"><div class="flex items-center gap-3 bg-red-50 rounded-lg p-3 border border-red-100"><div class="w-8 h-8 bg-red-200 rounded-full flex items-center justify-center text-xs font-bold text-red-700">U1</div><div class="flex-1 text-sm text-slate-600">"Streetlight out at Gate 2" <span class="mono text-xs text-red-400">x50 copied</span></div></div></div><div class="border-t border-slate-200 pt-4"><p class="mono text-xs text-red-600 mb-1">FLAGGED_AS_DUPLICATE</p><p class="mono text-xs text-slate-500">// WEIGHT: LOW</p><div class="w-full bg-red-100 rounded-full h-2 mt-2"><div class="bg-red-400 h-2 rounded-full" style="width:15%"></div></div></div></div>
+      <div class="civic-card p-6 reveal" style="transition-delay:.2s"><h3 class="font-heading font-semibold text-lg text-emerald-600 mb-4"><i class="fas fa-user-check mr-2"></i>Independent Verification</h3><div class="space-y-2 mb-4">
+        <div class="flex items-center gap-3 bg-emerald-50 rounded-lg p-3 border border-emerald-100"><div class="w-8 h-8 bg-emerald-200 rounded-full flex items-center justify-center text-xs font-bold text-emerald-700">U1</div><div class="flex-1 text-sm text-slate-600">Report at <span class="mono text-xs">08:12</span> — Loc A <span class="mono text-xs text-civic-600">+photo</span></div></div>
+        <div class="flex items-center gap-3 bg-emerald-50 rounded-lg p-3 border border-emerald-100"><div class="w-8 h-8 bg-emerald-200 rounded-full flex items-center justify-center text-xs font-bold text-emerald-700">U2</div><div class="flex-1 text-sm text-slate-600">Report at <span class="mono text-xs">09:44</span> — Loc B</div></div>
+        <div class="flex items-center gap-3 bg-emerald-50 rounded-lg p-3 border border-emerald-100"><div class="w-8 h-8 bg-emerald-200 rounded-full flex items-center justify-center text-xs font-bold text-emerald-700">U3</div><div class="flex-1 text-sm text-slate-600">Report at <span class="mono text-xs">14:20</span> — Loc C <span class="mono text-xs text-civic-600">+photo</span></div></div>
+        <div class="flex items-center gap-3 bg-emerald-50 rounded-lg p-3 border border-emerald-100"><div class="w-8 h-8 bg-emerald-200 rounded-full flex items-center justify-center text-xs font-bold text-emerald-700">U4</div><div class="flex-1 text-sm text-slate-600">Report at <span class="mono text-xs">19:05</span> — Loc D <span class="mono text-xs text-civic-600">+photo</span></div></div>
+      </div><div class="border-t border-slate-200 pt-4"><p class="mono text-xs text-emerald-600 mb-1">STATUS_UPGRADED_TO_CORROBORATED</p><p class="mono text-xs text-slate-500">// WEIGHT: HIGH</p><div class="w-full bg-emerald-100 rounded-full h-2 mt-2"><div class="bg-emerald-500 h-2 rounded-full" style="width:85%"></div></div></div></div>
+    </div>
+    <div class="bg-navy-800 text-white rounded-xl p-5 text-center mt-8 reveal" style="transition-delay:.3s"><p class="font-heading font-medium text-sm sm:text-base">"50 copied complaints do not equal 50 independent observations. Our logic prioritizes diverse data sources over raw volume."</p></div>
+  </div>
+</section>
+
+<!-- ===== AGGREGATION FUNNEL ===== -->
+<section id="funnel" class="section bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">06 — HOW IT WORKS</p><h2 class="font-heading font-bold text-3xl sm:text&colon;4xl text-navy-800 mb-10">The Aggregation Funnel</h2></div>
+    <div class="max-w-3xl mx-auto reveal" style="transition-delay:.1s">
+      <p class="mono text-xs text-red-500 tracking-widest mb-3 text-center">THE NOISE</p>
+      <div class="bg-red-50 border-2 border-red-200 rounded-2xl p-5 mb-2"><div class="flex flex-wrap gap-2 justify-center"><span class="bg-white text-red-600 text-xs px-3 py-1.5 rounded-full border border-red-200">"Darkness at Gate 2"</span><span class="bg-white text-red-600 text-xs px-3 py-1.5 rounded-full border border-red-200">"Streetlight is out again"</span><span class="bg-white text-amber-600 text-xs px-3 py-1.5 rounded-full border border-amber-200">"Lamp broken near campus gate"</span><span class="bg-white text-red-600 text-xs px-3 py-1.5 rounded-full border border-red-200">"No light on main road"</span><span class="bg-white text-amber-600 text-xs px-3 py-1.5 rounded-full border border-amber-200">"It's dark here"</span></div></div>
+      <div class="flex justify-center my-1"><div class="w-3/4 h-6 bg-gradient-to-b from-red-100 to-amber-50 rounded-b-full"></div></div>
+      <div class="flex justify-center my-1"><div class="w-1/2 h-6 bg-gradient-to-b from-amber-50 to-civic-100 rounded-b-full"></div></div>
+      <div class="bg-civic-100 border-2 border-civic-300 rounded-xl p-4 text-center mb-2"><p class="mono text-xs text-civic-700 font-semibold">AI EXTRACTION &amp; SIMILARITY DETECTION</p></div>
+      <div class="flex justify-center my-1"><div class="w-1/3 h-6 bg-gradient-to-b from-civic-100 to-emerald-50 rounded-b-full"></div></div>
+      <p class="mono text-xs text-emerald-600 tracking-widest mb-3 text-center mt-2">THE SIGNAL</p>
+      <div class="bg-emerald-50 border-2 border-emerald-300 rounded-2xl p-6 text-center" style="animation:pulseGlow 3s infinite"><div class="inline-flex items-center gap-3 bg-white rounded-xl px-6 py-4 shadow-lg border border-emerald-200"><i class="fas fa-bolt text-emerald-500 text-2xl"></i><div class="text-left"><p class="font-heading font-bold text-navy-800">Streetlight Failure — Gate 2</p><p class="mono text-xs text-emerald-600">37 reports merged into 1 accountable problem</p></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== VERIFICATION MODEL ===== -->
+<section id="verification" class="section" style="background:linear-gradient(180deg,#f8fafb,#f0fdfa);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">07 — VERIFICATION MODEL</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-10">Activation Curve</h2></div>
+    <div class="max-w-4xl mx-auto reveal" style="transition-delay:.1s"><div class="civic-card p-6 sm:p-8">
+      <svg viewBox="0 0 600 280" class="w-full" role="img" aria-label="Verification confidence activation curve"><defs><linearGradient id="cg" x1="0" y1="1" x2="1" y2="0"><stop offset="0%" stop-color="#ef4444"/><stop offset="33%" stop-color="#f59e0b"/><stop offset="66%" stop-color="#10b981"/><stop offset="100%" stop-color="#3b82f6"/></linearGradient></defs><line x1="60" y1="240" x2="560" y2="240" stroke="#cbd5e1" stroke-width="1.5"/><line x1="60" y1="240" x2="60" y2="30" stroke="#cbd5e1" stroke-width="1.5"/><text x="310" y="270" text-anchor="middle" fill="#64748b" font-size="11" font-family="JetBrains Mono">Data Density &amp; Independence</text><text x="25" y="140" text-anchor="middle" fill="#64748b" font-size="10" font-family="JetBrains Mono" transform="rotate(-90,25,140)">Verification Confidence</text><path d="M60 230 C120 225,160 210,200 190 C240 165,280 120,340 85 C400 55,460 40,540 32" fill="none" stroke="url(#cg)" stroke-width="3" stroke-linecap="round"/><circle cx="120" cy="222" r="8" fill="#ef4444" stroke="white" stroke-width="2"/><text x="120" y="210" text-anchor="middle" fill="#dc2626" font-size="9" font-weight="600" font-family="JetBrains Mono">UNVERIFIED</text><circle cx="260" cy="155" r="8" fill="#f59e0b" stroke="white" stroke-width="2"/><text x="260" y="143" text-anchor="middle" fill="#d97706" font-size="9" font-weight="600" font-family="JetBrains Mono">CORROBORATED</text><circle cx="400" cy="65" r="8" fill="#10b981" stroke="white" stroke-width="2"/><text x="400" y="53" text-anchor="middle" fill="#059669" font-size="9" font-weight="600" font-family="JetBrains Mono">EVIDENCE-BACKED</text><circle cx="520" cy="35" r="8" fill="#3b82f6" stroke="white" stroke-width="2"/><text x="520" y="23" text-anchor="middle" fill="#2563eb" font-size="9" font-weight="600" font-family="JetBrains Mono">RESOLVED</text></svg>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+        <div class="p-3 rounded-lg bg-red-50 border border-red-100"><p class="mono text-xs font-semibold text-red-600 mb-1">UNVERIFIED</p><p class="text-xs text-slate-600">Single report, insufficient evidence.</p></div>
+        <div class="p-3 rounded-lg bg-amber-50 border border-amber-100"><p class="mono text-xs font-semibold text-amber-600 mb-1">CORROBORATED</p><p class="text-xs text-slate-600">Multiple independent reports.</p></div>
+        <div class="p-3 rounded-lg bg-emerald-50 border border-emerald-100"><p class="mono text-xs font-semibold text-emerald-600 mb-1">EVIDENCE-BACKED</p><p class="text-xs text-slate-600">Corroboration + verified photos.</p></div>
+        <div class="p-3 rounded-lg bg-blue-50 border border-blue-100"><p class="mono text-xs font-semibold text-blue-600 mb-1">RESOLVED</p><p class="text-xs text-slate-600">Fixed + post-resolution check.</p></div>
+      </div>
+      <div class="mt-5 p-3 bg-slate-50 border border-slate-200 rounded-lg text-center"><p class="mono text-xs text-slate-500"><i class="fas fa-info-circle mr-1"></i>These states represent data density and evidence status, NOT absolute ground truth.</p></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===== DASHBOARD ===== -->
+<section id="dashboard" class="section bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">08 — THE PRODUCT</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-10">A Unified Issue Dashboard</h2></div>
+    <div class="reveal" style="transition-delay:.1s"><div class="civic-card overflow-hidden">
+      <div class="bg-gradient-to-r from-navy-800 to-civic-800 p-5 sm:p-6"><div class="flex flex-wrap items-center justify-between gap-3"><div><p class="mono text-xs text-civic-300 mb-1">SYNTHETIC DEMO DATA</p><h3 class="font-heading font-bold text-xl text-white">Streetlight Failure — Gate 2</h3></div><div class="badge badge-corrob"><i class="fas fa-circle text-[8px]" style="animation:statusPulse 2s infinite"></i> CORROBORATED</div></div></div>
+      <div class="p-5 sm:p-6">
+        <div class="grid lg:grid-cols-5 gap-6 mb-6">
+          <div class="lg:col-span-2 bg-civic-50 rounded-xl p-4 min-h-[220px] border border-civic-200">
+            <p class="mono text-xs text-civic-600 mb-2"><i class="fas fa-map-marker-alt mr-1"></i>ISSUE LOCATION</p>
+            <svg viewBox="0 0 300 170" class="w-full" style="max-height:160px">
+              <rect width="300" height="170" fill="#f0fdfa"/>
+              <path d="M20 150 L80 130 L140 145 L200 120 L260 135 L280 150" fill="none" stroke="#99f6e4" stroke-width="2"/>
+              <path d="M40 120 L100 100 L160 115 L220 90 L270 105" fill="none" stroke="#99f6e4" stroke-width="1.5"/>
+              <circle cx="150" cy="100" r="20" fill="#0d9488" opacity="0.15"/>
+              <circle cx="150" cy="100" r="8" fill="#f59e0b"/>
+              <text x="150" y="104" text-anchor="middle" fill="white" font-size="7" font-weight="bold">G2</text>
+              <text x="150" y="130" text-anchor="middle" fill="#0f766e" font-size="9">Gate 2 Cluster</text>
+            </svg>
+          </div>
+          <div class="lg:col-span-3 grid sm:grid-cols-3 gap-4">
+            <div class="bg-slate-50 rounded-xl p-4 text-center border border-slate-200"><p class="mono text-xs text-slate-500 mb-1">TOTAL_REPORTS</p><p class="font-heading font-bold text-4xl text-navy-800 counter" data-target="37">0</p></div>
+            <div class="bg-slate-50 rounded-xl p-4 text-center border border-slate-200"><p class="mono text-xs text-slate-500 mb-1">INDEPENDENT_REPORTERS</p><p class="font-heading font-bold text-4xl text-civic-600 counter" data-target="24">0</p></div>
+            <div class="bg-slate-50 rounded-xl p-4 text-center border border-slate-200"><p class="mono text-xs text-slate-500 mb-1">EVIDENCE_UPLOADS</p><p class="font-heading font-bold text-4xl text-emerald-600 counter" data-target="8">0</p></div>
+          </div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6 mb-6">
+          <div><p class="mono text-xs text-slate-500 mb-3"><i class="fas fa-clock mr-1"></i>REPORT TIMELINE</p><div class="space-y-3"><div class="flex items-start gap-3"><div class="w-2.5 h-2.5 bg-red-400 rounded-full mt-1.5 flex-shrink-0"></div><div><p class="text-sm font-medium text-navy-800">First reported</p><p class="mono text-xs text-slate-500">Sept 12, 2024</p></div></div><div class="flex items-start gap-3"><div class="w-2.5 h-2.5 bg-amber-400 rounded-full mt-1.5 flex-shrink-0"></div><div><p class="text-sm font-medium text-navy-800">Status upgraded to Corroborated</p><p class="mono text-xs text-slate-500">Sept 15, 2024</p></div></div><div class="flex items-start gap-3"><div class="w-2.5 h-2.5 bg-emerald-400 rounded-full mt-1.5 flex-shrink-0"></div><div><p class="text-sm font-medium text-navy-800">Evidence uploads began</p><p class="mono text-xs text-slate-500">Sept 20, 2024</p></div></div><div class="flex items-start gap-3"><div class="w-2.5 h-2.5 bg-civic-400 rounded-full mt-1.5 flex-shrink-0"></div><div><p class="text-sm font-medium text-navy-800">Latest activity</p><p class="mono text-xs text-slate-500">Oct 1, 2024</p></div></div></div></div>
+          <div><p class="mono text-xs text-slate-500 mb-3"><i class="fas fa-images mr-1"></i>EVIDENCE GALLERY</p><div class="grid grid-cols-3 gap-3">
+            <div class="civic-illust aspect-square !p-2 gap-1"><svg viewBox="0 0 80 80" class="w-10 h-10"><rect x="30" y="10" width="8" height="50" rx="1" fill="#64748b"/><circle cx="34" cy="10" r="6" fill="none" stroke="#ef4444" stroke-width="2"/><rect x="0" y="60" width="80" height="20" fill="#94a3b8"/></svg><span class="text-[10px] text-civic-700">Broken light</span></div>
+            <div class="civic-illust aspect-square !p-2 gap-1"><svg viewBox="0 0 80 80" class="w-10 h-10"><rect width="80" height="80" fill="#334155"/><ellipse cx="40" cy="45" rx="18" ry="8" fill="#1a1a2e"/><ellipse cx="40" cy="45" rx="18" ry="8" fill="none" stroke="#854d0e" stroke-width="2"/></svg><span class="text-[10px] text-civic-700">Pothole</span></div>
+            <div class="civic-illust aspect-square !p-2 gap-1"><svg viewBox="0 0 80 80" class="w-10 h-10"><rect width="80" height="80" fill="#0f172a"/><rect x="10" y="10" width="25" height="45" fill="#334155" rx="2"/><rect x="15" y="15" width="8" height="6" fill="#fde68a" opacity="0.4"/><rect x="45" y="20" width="25" height="35" fill="#334155" rx="2"/><text x="40" y="72" text-anchor="middle" fill="#f59e0b" font-size="7">DARK</text></svg><span class="text-[10px] text-civic-700">Dark zone</span></div>
+          </div></div>
+        </div>
+        <div class="grid md:grid-cols-2 gap-6">
+          <div><p class="mono text-xs text-slate-500 mb-3"><i class="fas fa-signal mr-1"></i>VERIFICATION PROGRESSION</p><div class="flex items-center gap-1"><div class="flex-1 h-3 bg-red-400 rounded-l-full"></div><div class="flex-1 h-3 bg-amber-400"></div><div class="flex-1 h-3 bg-slate-200 rounded-r-full"></div></div><div class="flex justify-between mt-1 text-[10px] mono text-slate-400"><span>UNVERIFIED</span><span>CORROBORATED</span><span>EVIDENCE-BACKED</span></div></div>
+          <div class="bg-amber-50 border border-amber-200 rounded-lg p-4"><p class="mono text-xs font-semibold text-amber-700 mb-2"><i class="fas fa-question-circle mr-1"></i>WHY THIS STATUS?</p><p class="text-xs text-slate-700">Status is <strong>CORROBORATED</strong>: 24 independent reporters submitted matching reports. Evidence uploads (8) exist but have not yet met the threshold for EVIDENCE-BACKED upgrade per deterministic rules.</p></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ===== 3D CITY MODEL ===== -->
+<section id="citymodel" class="section" style="background:linear-gradient(180deg,#f0fdfa,#f8fafb);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">INTERACTIVE 3D CITY</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-2">Civic Issue Visualization</h2><p class="text-slate-600 mb-8">Explore the 3D city model. The <span class="inline-block w-3 h-3 bg-civic-500 rounded-sm align-middle"></span> teal area shows where citizens have reported issues. Rotate and zoom to inspect.</p></div>
+    <div class="reveal" style="transition-delay:.1s"><div class="civic-card overflow-hidden p-2"><canvas id="city-3d"></canvas></div></div>
+  </div>
+</section>
+
+<!-- ===== ARCHITECTURE + STACK ===== -->
+<section id="architecture" class="section bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">09 — ARCHITECTURAL PHILOSOPHY</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-10">AI Assistance + Transparent Rules</h2></div>
+    <div class="grid md:grid-cols-2 gap-8 mb-6">
+      <div class="civic-card p-6 reveal" style="transition-delay:.1s"><div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-gradient-to-br from-purple-100 to-pink-100 rounded-xl flex items-center justify-center"><i class="fas fa-brain text-purple-600"></i></div><h3 class="font-heading font-semibold text-lg text-navy-800">AI's Role (Heuristics)</h3></div><ul class="space-y-2.5 text-sm text-slate-600"><li class="flex items-start gap-2"><i class="fas fa-check text-purple-400 mt-1 text-xs"></i>Complaint text extraction</li><li class="flex items-start gap-2"><i class="fas fa-check text-purple-400 mt-1 text-xs"></i>Semantic categorization</li><li class="flex items-start gap-2"><i class="fas fa-check text-purple-400 mt-1 text-xs"></i>Similarity assistance (NLP)</li><li class="flex items-start gap-2"><i class="fas fa-check text-purple-400 mt-1 text-xs"></i>Automated summarization</li><li class="flex items-start gap-2"><i class="fas fa-check text-purple-400 mt-1 text-xs"></i>Spam/abuse moderation</li></ul></div>
+      <div class="civic-card p-6 reveal" style="transition-delay:.2s"><div class="flex items-center gap-3 mb-4"><div class="w-10 h-10 bg-gradient-to-br from-civic-100 to-blue-100 rounded-xl flex items-center justify-center"><i class="fas fa-microchip text-civic-700"></i></div><h3 class="font-heading font-semibold text-lg text-navy-800">Conventional Logic (Determinism)</h3></div><ul class="space-y-2.5 text-sm text-slate-600"><li class="flex items-start gap-2"><i class="fas fa-check text-civic-500 mt-1 text-xs"></i>Location proximity mapping</li><li class="flex items-start gap-2"><i class="fas fa-check text-civic-500 mt-1 text-xs"></i>Category matching</li><li class="flex items-start gap-2"><i class="fas fa-check text-civic-500 mt-1 text-xs"></i>Time overlap validation</li><li class="flex items-start gap-2"><i class="fas fa-check text-civic-500 mt-1 text-xs"></i>Evidence cross-referencing</li><li class="flex items-start gap-2"><i class="fas fa-check text-civic-500 mt-1 text-xs"></i>Reporter independence rules</li></ul></div>
+    </div>
+    <div class="bg-navy-800 text-white rounded-xl p-5 text-center mb-16 reveal" style="transition-delay:.3s"><p class="font-heading font-medium text-sm sm:text-base">"AI organizes the data. Deterministic logic validates the evidence. AI does not determine 'truth.'"</p></div>
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">10 — 7-HOUR MVP EXECUTION</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-8">Technology Stack</h2></div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8 reveal" style="transition-delay:.1s">
+      <div class="civic-card p-4 text-center"><i class="fab fa-react text-2xl text-cyan-500 mb-2"></i><p class="font-heading font-semibold text-sm text-navy-800">Frontend</p><p class="text-xs text-slate-500">React / HTML / CSS</p></div>
+      <div class="civic-card p-4 text-center"><i class="fab fa-python text-2xl text-yellow-500 mb-2"></i><p class="font-heading font-semibold text-sm text-navy-800">Backend</p><p class="text-xs text-slate-500">Python / FastAPI</p></div>
+      <div class="civic-card p-4 text-center"><i class="fas fa-database text-2xl text-emerald-500 mb-2"></i><p class="font-heading font-semibold text-sm text-navy-800">Database</p><p class="text-xs text-slate-500">Supabase (PostgreSQL)</p></div>
+      <div class="civic-card p-4 text-center"><i class="fas fa-robot text-2xl text-purple-500 mb-2"></i><p class="font-heading font-semibold text-sm text-navy-800">AI Engine</p><p class="text-xs text-slate-500">Kimi K3 (API)</p></div>
+      <div class="civic-card p-4 text-center"><i class="fas fa-chart-pie text-2xl text-civic-600 mb-2"></i><p class="font-heading font-semibold text-sm text-navy-800">Visualization</p><p class="text-xs text-slate-500">Custom charts + maps</p></div>
+    </div>
+    <div class="bg-navy-800 text-white rounded-xl p-5 text-center reveal" style="transition-delay:.2s"><p class="font-heading font-medium text-sm sm:text-base">"0% Custom ML Training. 0% Fake Government Integration. 100% focused on a functional data-structuring layer."</p></div>
+  </div>
+</section>
+
+<!-- ===== LIVE DEMO ===== -->
+<section id="demo" class="section" style="background:linear-gradient(180deg,#f0fdfa,#f8fafb);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">11 — LIVE DEMO</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-2">Interactive Demo</h2><p class="text-slate-600 mb-8">Scenario: Streetlight Failure — Gate 2</p></div>
+    <div class="grid lg:grid-cols-3 gap-6 reveal" style="transition-delay:.1s">
+      <div class="civic-card p-6"><h3 class="font-heading font-semibold text-lg text-navy-800 mb-4">Controls</h3><div class="space-y-4"><button id="btnIngest" class="btn-civic w-full text-sm" onclick="demoIngestReports()"><i class="fas fa-plus-circle mr-2"></i>Ingest 4 New Independent Reports</button><button id="btnEvidence" class="btn-outline w-full text-sm" onclick="demoAddEvidence()" disabled><i class="fas fa-camera mr-2"></i>Add Evidence Uploads</button><button id="btnResolve" class="btn-outline w-full text-sm !border-blue-400 !text-blue-600 hover:!bg-blue-500 hover:!text-white" onclick="demoMarkResolved()" disabled><i class="fas fa-check-double mr-2"></i>Mark Fixed + Citizen Check</button></div><div class="mt-6 p-4 bg-slate-50 rounded-lg border border-slate-200"><p class="mono text-xs text-slate-500 mb-2">CURRENT STATUS</p><div id="demoStatus" class="badge badge-unver"><i class="fas fa-circle text-[8px]"></i> UNVERIFIED</div><div class="mt-3 space-y-1 text-xs text-slate-600"><p>Reports: <span id="demoReportCount" class="mono font-semibold">1</span></p><p>Independent reporters: <span id="demoReporterCount" class="mono font-semibold">1</span></p><p>Evidence uploads: <span id="demoEvidenceCount" class="mono font-semibold">0</span></p></div></div><p class="mono text-[10px] text-slate-400 mt-4">SYNTHETIC DEMO DATA</p></div>
+      <div class="lg:col-span-2 civic-card p-6"><h3 class="font-heading font-semibold text-lg text-navy-800 mb-4">Processing Log</h3><div id="stepLog" class="step-log space-y-1"><div class="step-entry"><span class="mono text-xs text-slate-400">[init]</span> Scenario initialized: Streetlight Failure — Gate 2</div><div class="step-entry"><span class="mono text-xs text-slate-400">[init]</span> 1 unverified report in queue</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== REPORT ===== -->
+<section id="report" class="section bg-white">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">12 — REPORT AN ISSUE</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-2">Submit a Civic Report</h2><p class="text-slate-600 mb-8">Your report is an allegation. Independent observations turn it into evidence.</p></div>
+    <div class="max-w-2xl mx-auto reveal" style="transition-delay:.1s">
+      <form id="reportForm" class="civic-card p-6 sm:p-8" onsubmit="return handleReportSubmit(event)">
+        <div class="mb-5"><label class="block text-sm font-medium text-navy-800 mb-1.5" for="issueDesc">Issue Description</label><textarea id="issueDesc" rows="4" required class="w-full border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-civic-500 focus:border-civic-500 outline-none resize-vertical" placeholder="Describe the civic issue you observed..."></textarea></div>
+        <div class="mb-5"><label class="block text-sm font-medium text-navy-800 mb-1.5" for="issueCat">Category</label><select id="issueCat" required class="w-full border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-civic-500 focus:border-civic-500 outline-none bg-white"><option value="">Select...</option><option value="streetlight">Streetlight / Lighting</option><option value="road">Road / Pavement</option><option value="water">Water / Drainage</option><option value="waste">Waste / Sanitation</option><option value="safety">Safety / Hazard</option><option value="other">Other</option></select></div>
+        <div class="grid sm:grid-cols-2 gap-4 mb-5"><div><label class="block text-sm font-medium text-navy-800 mb-1.5" for="issueLoc">Location</label><input id="issueLoc" type="text" required class="w-full border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-civic-500 focus:border-civic-500 outline-none" placeholder="e.g. Gate 2, Main Road"></div><div><label class="block text-sm font-medium text-navy-800 mb-1.5" for="issueTime">Date / Time</label><input id="issueTime" type="datetime-local" required class="w-full border border-slate-300 rounded-lg p-3 text-sm focus:ring-2 focus:ring-civic-500 focus:border-civic-500 outline-none"></div></div>
+        <div class="mb-6"><label class="block text-sm font-medium text-navy-800 mb-1.5">Photo / Evidence Upload</label><div id="dropZone" class="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center cursor-pointer hover:border-civic-400 hover:bg-civic-50 transition" onclick="document.getElementById('issuePhoto').click()"><i class="fas fa-cloud-upload-alt text-2xl text-slate-400 mb-2"></i><p class="text-sm text-slate-500">Click or drag to upload evidence</p></div><input id="issuePhoto" type="file" accept="image/*" class="hidden" onchange="handlePhotoSelect(this)"><div id="photoPreview" class="mt-3 hidden"><img id="previewImg" class="w-32 h-32 object-cover rounded-lg border border-slate-200" alt="Preview"><button type="button" class="text-xs text-red-500 mt-1" onclick="clearPhoto()"><i class="fas fa-times mr-1"></i>Remove</button></div></div>
+        <button type="submit" class="btn-civic w-full text-base"><i class="fas fa-paper-plane mr-2"></i>Submit Report</button>
+        <p class="mono text-[10px] text-slate-400 mt-4 text-center">Simulation mode active until API is configured.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SUPABASE ===== -->
+<section id="backend" class="section" style="background:linear-gradient(180deg,#f8fafb,#f0fdfa);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6">
+    <div class="reveal"><p class="mono text-xs text-civic-700 tracking-widest mb-2">BACKEND — SUPABASE</p><h2 class="font-heading font-bold text-3xl sm:text-4xl text-navy-800 mb-10">Database & Storage</h2></div>
+    <div class="grid lg:grid-cols-2 gap-8 reveal" style="transition-delay:.1s">
+      <div class="sb-panel p-6">
+        <div class="flex items-center gap-3 mb-5"><i class="fas fa-database text-civic-400 text-xl"></i><h3 class="font-heading font-semibold text-lg">Supabase Configuration</h3></div>
+        <div class="space-y-4">
+          <div><label class="block text-xs text-slate-400 mb-1 mono">PROJECT URL</label><input id="sbUrl" type="text" class="w-full bg-white/10 border border-white/20 rounded-lg p-2.5 text-sm text-white font-mono outline-none focus:border-civic-400" placeholder="https://your-project.supabase.co"></div>
+          <div><label class="block text-xs text-slate-400 mb-1 mono">ANON KEY</label><input id="sbKey" type="password" class="w-full bg-white/10 border border-white/20 rounded-lg p-2.5 text-sm text-white font-mono outline-none focus:border-civic-400" placeholder="eyJhbGciOi..."></div>
+          <button onclick="connectSupabase()" class="w-full bg-civic-600 hover:bg-civic-700 text-white rounded-lg py-2.5 font-semibold transition"><i class="fas fa-plug mr-2"></i>Connect to Supabase</button>
+          <div id="sbStatus" class="flex items-center gap-2 text-sm"><span class="sb-status-dot bg-slate-500"></span><span class="text-slate-400">Not connected — using mock service</span></div>
+        </div>
+        <div class="mt-5 p-3 bg-white/5 rounded-lg border border-white/10"><p class="text-xs text-slate-400 mb-2">Required SQL tables:</p><pre class="text-xs text-civic-300 overflow-x-auto"><code>CREATE TABLE reports (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  description TEXT, category TEXT,
+  location TEXT, report_time TIMESTAMPTZ,
+  user_id TEXT, photo_url TEXT,
+  created_at TIMESTAMPTZ DEFAULT now()
+);
+CREATE TABLE issues (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  title TEXT, category TEXT,
+  status TEXT DEFAULT 'UNVERIFIED',
+  total_reports INT DEFAULT 1,
+  independent_reporters INT DEFAULT 1,
+  evidence_uploads INT DEFAULT 0,
+  created_at TIMESTAMPTZ DEFAULT now(),
+  updated_at TIMESTAMPTZ DEFAULT now()
+);</code></pre></div>
+      </div>
+      <div class="civic-card p-6">
+        <div class="flex items-center gap-3 mb-5"><i class="fas fa-chart-bar text-civic-600 text-xl"></i><h3 class="font-heading font-semibold text-lg text-navy-800">Database Monitor</h3></div>
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4"><div class="bg-slate-50 rounded-xl p-4 text-center border border-slate-200"><p class="mono text-xs text-slate-500 mb-1">REPORTS</p><p id="monReports" class="font-heading font-bold text-2xl text-navy-800">0</p></div><div class="bg-slate-50 rounded-xl p-4 text-center border border-slate-200"><p class="mono text-xs text-slate-500 mb-1">ISSUES</p><p id="monIssues" class="font-heading font-bold text-2xl text-civic-600">0</p></div></div>
+          <div><p class="mono text-xs text-slate-500 mb-2">RECENT SUBMISSIONS</p><div id="recentSubs" class="space-y-2 max-h-[200px] overflow-y-auto"><p class="text-xs text-slate-400 italic">No submissions yet</p></div></div>
+          <div class="p-3 bg-civic-50 rounded-lg border border-civic-200"><p class="text-xs text-civic-700"><i class="fas fa-info-circle mr-1"></i>Once connected, submissions are stored in your Supabase PostgreSQL database. Visit <a id="sbDashLink" href="https://supabase.com/dashboard" target="_blank" class="underline font-semibold hover:text-civic-800">your Supabase Dashboard</a> to view entries.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER ===== -->
+<footer class="bg-navy-800 text-white py-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 text-center">
+    <p class="font-heading font-bold text-lg mb-2">Civic Accountability MVP // CodeSeekers</p>
+    <p class="text-civic-300 text-sm font-medium mb-4">"Many complaints → One accountable problem."</p>
+    <div class="flex justify-center gap-6 text-slate-400 text-sm mb-6"><a href="#hero" class="hover:text-white transition">Home</a><a href="#demo" class="hover:text-white transition">Demo</a><a href="#dashboard" class="hover:text-white transition">Dashboard</a><a href="#report" class="hover:text-white transition">Report</a></div>
+    <p class="mono text-xs text-slate-500">SYNTHETIC DEMO DATA — No real government integration</p>
+  </div>
+</footer>
+
+<!-- DISHA CHATBOT -->
+<button class="chat-btn" id="chatToggle" aria-label="Open Disha chatbot" onclick="toggleChat()"><i class="fas fa-comments"></i><span class="chat-dot" id="chatDot"></span></button>
+<div class="chat-panel" id="chatPanel" role="dialog" aria-label="Disha chatbot">
+  <div class="chat-header">
+    <div class="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center text-lg">🤖</div>
+    <div><p class="font-heading font-semibold">Disha</p><p class="text-xs text-civic-200">Your civic accountability guide</p></div>
+    <button class="ml-auto text-white/60 hover:text-white" onclick="toggleChat()" aria-label="Close chat"><i class="fas fa-times"></i></button>
+  </div>
+  <div class="chat-messages" id="chatMessages"><div class="chat-msg bot">Hi! I'm <strong>Disha</strong>, your guide to Civic Accountability. I can help you navigate the website, understand verification, or report an issue. What would you like to know?</div></div>
+  <div class="chat-input-area"><input type="text" id="chatInput" placeholder="Ask Disha anything..." onkeydown="if(event.key==='Enter')sendChat()" aria-label="Chat input"><button onclick="sendChat()" aria-label="Send"><i class="fas fa-paper-plane"></i></button></div>
+</div>
+
+<!-- Processing overlay -->
+<div id="processingOverlay" class="hidden fixed inset-0 bg-navy-800/80 z-50 flex items-center justify-center p-4"><div class="civic-card p-8 max-w-md w-full text-center"><div class="mb-4"><div class="w-12 h-12 border-4 border-civic-200 border-t-civic-600 rounded-full animate-spin mx-auto"></div></div><p id="processingStep" class="mono text-sm text-civic-700 mb-2">REPORT RECEIVED</p><div class="w-full bg-slate-100 rounded-full h-2 mt-4"><div id="processingBar" class="bg-civic-500 h-2 rounded-full transition-all duration-500" style="width:0%"></div></div></div></div>
+
+<!-- ===== THREE.JS HERO 3D ===== -->
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+function initHero3D() {
+  const canvas = document.getElementById('hero-3d');
+  const container = document.getElementById('hero3dContainer');
+  if (!canvas || !container) return;
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+  camera.position.set(4, 2, 8);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.enableZoom = true;
+  controls.enablePan = false;
+  controls.minDistance = 4;
+  controls.maxDistance = 18;
+  controls.autoRotate = true;
+  controls.autoRotateSpeed = 0.4;
+
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
+  const pl1 = new THREE.PointLight(0x0d9488, 2.5, 25); pl1.position.set(5, 5, 5); scene.add(pl1);
+  const pl2 = new THREE.PointLight(0x14b8a6, 1.5, 20); pl2.position.set(-4, -2, 6); scene.add(pl2);
+
+  // Central cluster
+  const cMat = new THREE.MeshPhongMaterial({ color: 0x0d9488, emissive: 0x0d9488, emissiveIntensity: 0.4, transparent: true, opacity: 0.85 });
+  const cluster = new THREE.Mesh(new THREE.SphereGeometry(0.6, 32, 32), cMat);
+  scene.add(cluster);
+  scene.add(new THREE.Mesh(new THREE.SphereGeometry(0.9, 32, 32), new THREE.MeshBasicMaterial({ color: 0x2dd4bf, transparent: true, opacity: 0.1, side: THREE.BackSide })));
+
+  // Fragments converging
+  const frags = [];
+  const fc = [0xef4444, 0xf59e0b, 0xf97316, 0xeab308];
+  for (let i = 0; i < 50; i++) {
+    const sz = Math.max(0.04, Math.random() * 0.12 + 0.04);
+    const m = new THREE.Mesh(new THREE.SphereGeometry(sz, 8, 8), new THREE.MeshPhongMaterial({ color: fc[i % 4], emissive: fc[i % 4], emissiveIntensity: 0.15, transparent: true, opacity: 0.6 + Math.random() * 0.3 }));
+    const th = Math.random() * Math.PI * 2, ph = Math.random() * Math.PI, r = 3 + Math.random() * 4;
+    m.position.set(r * Math.sin(ph) * Math.cos(th), r * Math.sin(ph) * Math.sin(th) * 0.5, r * Math.cos(ph));
+    m.userData = { start: m.position.clone(), speed: 0.002 + Math.random() * 0.006, phase: Math.random() * Math.PI * 2, oSpeed: 0.3 + Math.random() * 0.5, oR: 0.4 + Math.random(), angle: Math.random() * Math.PI * 2 };
+    scene.add(m); frags.push(m);
+  }
+
+  // AI ROBOT
+  const rg = new THREE.Group(); rg.position.set(-2, 0.5, 0); scene.add(rg);
+  const bMat = new THREE.MeshPhongMaterial({ color: 0x1a1a2e, emissive: 0x0d9488, emissiveIntensity: 0.08, shininess: 60 });
+  const body = new THREE.Mesh(new THREE.BoxGeometry(0.8, 1, 0.5), bMat); body.position.y = 0.5; rg.add(body);
+  const head = new THREE.Mesh(new THREE.BoxGeometry(0.65, 0.55, 0.45), bMat); head.position.y = 1.3; rg.add(head);
+  const eMat = new THREE.MeshPhongMaterial({ color: 0x2dd4bf, emissive: 0x2dd4bf, emissiveIntensity: 0.8 });
+  rg.add(new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), eMat).translateX(-0.14).translateY(1.35).translateZ(0.23));
+  rg.add(new THREE.Mesh(new THREE.SphereGeometry(0.07, 16, 16), eMat).translateX(0.14).translateY(1.35).translateZ(0.23));
+  const ant = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.35, 8), new THREE.MeshPhongMaterial({ color: 0x64748b })); ant.position.y = 1.75; rg.add(ant);
+  const antT = new THREE.Mesh(new THREE.SphereGeometry(0.06, 16, 16), new THREE.MeshPhongMaterial({ color: 0xef4444, emissive: 0xef4444, emissiveIntensity: 0.6 })); antT.position.y = 1.95; rg.add(antT);
+  const aMat = new THREE.MeshPhongMaterial({ color: 0x334155 });
+  const aL = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.7, 8), aMat); aL.position.set(-0.52, 0.5, 0); aL.rotation.z = 0.3; rg.add(aL);
+  const aR = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.7, 8), aMat); aR.position.set(0.52, 0.5, 0); aR.rotation.z = -0.3; rg.add(aR);
+
+  // "AI" label
+  const lc = document.createElement('canvas'); lc.width = 128; lc.height = 64;
+  const lx = lc.getContext('2d'); lx.fillStyle = '#0d9488'; lx.fillRect(0, 0, 128, 64); lx.fillStyle = '#fff'; lx.font = 'bold 32px sans-serif'; lx.textAlign = 'center'; lx.fillText('AI', 64, 44);
+  const lbl = new THREE.Mesh(new THREE.PlaneGeometry(0.5, 0.25), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(lc), transparent: true })); lbl.position.set(0, 2.2, 0); rg.add(lbl);
+
+  // Speech bubble
+  const bc = document.createElement('canvas'); bc.width = 256; bc.height = 128;
+  const bx = bc.getContext('2d'); bx.fillStyle = 'rgba(240,253,250,0.92)'; bx.beginPath(); bx.roundRect(10, 10, 236, 90, 12); bx.fill();
+  bx.fillStyle = '#1a1a2e'; bx.font = '14px sans-serif'; bx.fillText('Reports converge', 30, 42); bx.fillText('into evidence!', 30, 62);
+  bx.fillStyle = '#0d9488'; bx.font = '11px monospace'; bx.fillText('→ CORROBORATED', 30, 84);
+  const bubble = new THREE.Mesh(new THREE.PlaneGeometry(1.2, 0.6), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(bc), transparent: true })); bubble.position.set(1.5, 1.8, 0.3); rg.add(bubble);
+
+  // Particles
+  const pN = 150, pG = new THREE.BufferGeometry(), pP = new Float32Array(pN * 3);
+  for (let i = 0; i < pN; i++) { pP[i * 3] = (Math.random() - .5) * 16; pP[i * 3 + 1] = (Math.random() - .5) * 10; pP[i * 3 + 2] = (Math.random() - .5) * 16; }
+  pG.setAttribute('position', new THREE.BufferAttribute(pP, 3));
+  scene.add(new THREE.Points(pG, new THREE.PointsMaterial({ color: 0x99f6e4, size: 0.03, transparent: true, opacity: 0.35 })));
+
+  const prm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let t = 0;
+
+  function resize() {
+    const w = container.clientWidth || 400, h = container.clientHeight || 400;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  new ResizeObserver(resize).observe(container);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    t += prm ? 0.001 : 0.012;
+    const s = 1 + Math.sin(t * 2) * 0.06;
+    cluster.scale.set(s, s, s);
+    cMat.emissiveIntensity = 0.3 + Math.sin(t * 3) * 0.12;
+
+    frags.forEach(f => {
+      const d = f.userData, ct = Math.min(1, (Math.sin(t * d.speed * 50 + d.phase) + 1) / 2);
+      if (ct > 0.7) { d.angle += d.oSpeed * 0.01; f.position.x = Math.cos(d.angle) * d.oR * 0.4; f.position.y = Math.sin(d.angle * 1.3) * d.oR * 0.25; f.position.z = Math.sin(d.angle) * d.oR * 0.4; }
+      else { f.position.lerpVectors(d.start, new THREE.Vector3(0, 0, 0), ct); }
+    });
+
+    rg.position.y = 0.5 + Math.sin(t * 1.5) * 0.15;
+    rg.rotation.y = Math.sin(t * 0.5) * 0.1;
+    aL.rotation.z = 0.3 + Math.sin(t * 2) * 0.15;
+    aR.rotation.z = -0.3 - Math.sin(t * 2 + 1) * 0.15;
+    antT.material.emissiveIntensity = 0.4 + Math.sin(t * 4) * 0.3;
+    eMat.emissiveIntensity = 0.6 + Math.sin(t * 3) * 0.3;
+    bubble.lookAt(camera.position);
+
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+
+// Wait for DOM then init
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(initHero3D));
+else requestAnimationFrame(initHero3D);
+</script>
+
+<!-- ===== THREE.JS CITY 3D ===== -->
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+function initCity3D() {
+  const canvas = document.getElementById('city-3d');
+  if (!canvas) return;
+
+  const scene = new THREE.Scene();
+  scene.background = new THREE.Color(0x1a1a2e);
+  scene.fog = new THREE.Fog(0x1a1a2e, 20, 40);
+
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+  camera.position.set(8, 8, 12);
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.shadowMap.enabled = true;
+
+  const controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true;
+  controls.dampingFactor = 0.05;
+  controls.maxPolarAngle = Math.PI / 2.1;
+  controls.minDistance = 5;
+  controls.maxDistance = 25;
+
+  scene.add(new THREE.AmbientLight(0x334155, 0.6));
+  const dl = new THREE.DirectionalLight(0xfbbf24, 0.8); dl.position.set(10, 15, 5); dl.castShadow = true; scene.add(dl);
+
+  // Ground
+  const ground = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.MeshPhongMaterial({ color: 0x2d3748 }));
+  ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
+
+  // Roads
+  function road(x, z, w, d) {
+    const r = new THREE.Mesh(new THREE.BoxGeometry(w, 0.02, d), new THREE.MeshPhongMaterial({ color: 0x4a5568 })); r.position.set(x, 0.01, z); r.receiveShadow = true; scene.add(r);
+    const l = new THREE.Mesh(new THREE.BoxGeometry(w, 0.025, 0.05), new THREE.MeshBasicMaterial({ color: 0xfbbf24 })); l.position.set(x, 0.03, z); scene.add(l);
+  }
+  road(0, 0, 20, 3); road(0, 0, 3, 20);
+
+  // Buildings
+  function bld(x, z, w, d, h, col) {
+    const b = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshPhongMaterial({ color: col })); b.position.set(x, h / 2, z); b.castShadow = true; scene.add(b);
+    const wm = new THREE.MeshBasicMaterial({ color: 0xfde68a });
+    for (let wy = 0.5; wy < h - 0.3; wy += 0.8) for (let wx = -w / 2 + 0.3; wx < w / 2 - 0.1; wx += 0.6) {
+      const w1 = new THREE.Mesh(new THREE.PlaneGeometry(0.25, 0.3), wm); w1.position.set(x + wx, wy + 0.3, z + d / 2 + 0.01); scene.add(w1);
+      const w2 = new THREE.Mesh(new THREE.PlaneGeometry(0.25, 0.3), wm); w2.position.set(x + wx, wy + 0.3, z - d / 2 - 0.01); w2.rotation.y = Math.PI; scene.add(w2);
+    }
+  }
+  const bc = [0x475569, 0x64748b, 0x334155, 0x374151];
+  bld(-5, -5, 2, 2, 4, bc[0]); bld(-5, 5, 1.5, 3, 6, bc[1]); bld(5, -5, 2.5, 2, 3.5, bc[2]); bld(5, 5, 2, 1.5, 5, bc[3]); bld(-8, 0, 1.5, 1.5, 7, bc[0]); bld(8, -2, 2, 2, 4.5, bc[2]); bld(-3, -8, 3, 2, 3, bc[1]); bld(3, 8, 2, 2.5, 5.5, bc[3]);
+
+  // Streetlights
+  function sl(x, z, on) {
+    const pm = new THREE.MeshPhongMaterial({ color: 0x94a3b8 });
+    const p = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.06, 3, 8), pm); p.position.set(x, 1.5, z); scene.add(p);
+    const a = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 0.5, 6), pm); a.position.set(x + 0.25, 3, z); a.rotation.z = Math.PI / 2; scene.add(a);
+    const lc = on ? 0xfde68a : 0x475569;
+    const lm = new THREE.MeshPhongMaterial({ color: lc, emissive: on ? 0xfbbf24 : 0x000000, emissiveIntensity: on ? 0.6 : 0 });
+    const la= new THREE.Mesh(new THREE.SphereGeometry(0.12, 16, 16), lm); la.position.set(x + 0.5, 3.05, z); scene.add(la);
+    if (on) { const pl = new THREE.PointLight(0xfbbf24, 0.5, 5); pl.position.set(x + 0.5, 2.9, z); scene.add(pl); }
+  }
+  sl(2, 2, true); sl(-2, 2, true); sl(2, -2, true);
+  sl(-2, -2, false); // Broken — Gate 2
+  sl(-4, -2, false); // Also broken
+
+  // Potholes
+  function pothole(x, z, r) {
+    const pg = new THREE.CircleGeometry(r, 16);
+    const pm = new THREE.MeshPhongMaterial({ color: 0x1a1a2e, side: THREE.DoubleSide });
+    const p = new THREE.Mesh(pg, pm); p.rotation.x = -Math.PI / 2; p.position.set(x, 0.02, z); scene.add(p);
+    const rm = new THREE.Mesh(new THREE.RingGeometry(r, r + 0.08, 16), new THREE.MeshBasicMaterial({ color: 0x854d0e, side: THREE.DoubleSide }));
+    rm.rotation.x = -Math.PI / 2; rm.position.set(x, 0.03, z); scene.add(rm);
+  }
+  pothole(0.5, 0.3, 0.25); pothole(-0.8, -0.5, 0.18); pothole(3, 0.2, 0.15);
+
+  // Reported area — pulsing teal
+  const rptArea = new THREE.Mesh(
+    new THREE.CylinderGeometry(2, 2, 0.08, 32),
+    new THREE.MeshPhongMaterial({ color: 0x0d9488, emissive: 0x0d9488, emissiveIntensity: 0.5, transparent: true, opacity: 0.45 })
+  );
+  rptArea.position.set(-2, 0.06, -2); scene.add(rptArea);
+
+  const ring = new THREE.Mesh(
+    new THREE.RingGeometry(1.8, 2.1, 32),
+    new THREE.MeshBasicMaterial({ color: 0x2dd4bf, transparent: true, opacity: 0.6, side: THREE.DoubleSide })
+  );
+  ring.rotation.x = -Math.PI / 2; ring.position.set(-2, 0.09, -2); scene.add(ring);
+
+  // "REPORTED AREA" floating label
+  const rc = document.createElement('canvas'); rc.width = 256; rc.height = 64;
+  const rx = rc.getContext('2d');
+  rx.fillStyle = '#0d9488'; rx.fillRect(0, 0, 256, 64);
+  rx.fillStyle = '#fff'; rx.font = 'bold 22px sans-serif'; rx.textAlign = 'center'; rx.fillText('REPORTED AREA', 128, 40);
+  const rptLbl = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 0.4), new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(rc), transparent: true }));
+  rptLbl.position.set(-2, 2.5, -2); scene.add(rptLbl);
+
+  // Pin marker
+  const pinH = new THREE.Mesh(new THREE.SphereGeometry(0.15, 16, 16), new THREE.MeshPhongMaterial({ color: 0xf59e0b, emissive: 0xf59e0b, emissiveIntensity: 0.3 }));
+  pinH.position.set(-2, 2.1, -2); scene.add(pinH);
+  const pinP = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.5, 8), new THREE.MeshPhongMaterial({ color: 0xf59e0b }));
+  pinP.position.set(-2, 1.35, -2); scene.add(pinP);
+
+  const prm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let t = 0;
+
+  function resize() {
+    const w = canvas.clientWidth || 600, h = canvas.clientHeight || 450;
+    renderer.setSize(w, h);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  new ResizeObserver(resize).observe(canvas);
+
+  function animate() {
+    requestAnimationFrame(animate);
+    t += prm ? 0.001 : 0.015;
+
+    const rs = 1 + Math.sin(t * 2) * 0.08;
+    rptArea.scale.set(rs, 1, rs);
+    ring.scale.set(rs, rs, 1);
+    ring.material.opacity = 0.4 + Math.sin(t * 3) * 0.25;
+
+    pinH.position.y = 2.1 + Math.sin(t * 1.5) * 0.15;
+    rptLbl.position.y = 2.5 + Math.sin(t * 1.5 + 0.5) * 0.1;
+    rptLbl.lookAt(camera.position);
+
+    controls.update();
+    renderer.render(scene, camera);
+  }
+  animate();
+}
+
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => requestAnimationFrame(initCity3D));
+else requestAnimationFrame(initCity3D);
+</script>
+
+<!-- ===== APPLICATION LOGIC ===== -->
+<script>
+// ===== Verification Logic =====
+const VerificationLogic = {
+  computeStatus(rc, irc, ec, fixed, postCheck) {
+    if (fixed && postCheck && irc > 1) return 'RESOLVED';
+    if (irc > 1 && ec > 0) return 'EVIDENCE-BACKED';
+    if (irc > 1) return 'CORROBORATED';
+    return 'UNVERIFIED';
+  },
+  checkIndependence(nR, existing) {
+    if (existing.some(r => r.userId === nR.userId)) return { independent: false, reason: 'Same user already reported' };
+    return { independent: true, reason: 'Distinct reporter' };
+  },
+  getStatusExplanation(s, d) {
+    const m = {
+      'UNVERIFIED': 'Single report, insufficient evidence.',
+      'CORROBORATED': d.independentReporters + ' independent reporters. Evidence pending or below threshold.',
+      'EVIDENCE-BACKED': d.independentReporters + ' reporters + ' + d.evidenceUploads + ' evidence uploads.',
+      'RESOLVED': 'Fixed + post-resolution check. Accountability loop closed.'
+    };
+    return m[s] || '';
+  }
+};
+
+const ClusteringLogic = {
+  proximityScore(a, b) { return Math.sqrt(((a.lat || 0) - (b.lat || 0)) ** 2 + ((a.lng || 0) - (b.lng || 0)) ** 2); },
+  findMatchingCluster(r, clusters) { return clusters.find(c => c.category === r.category && this.proximityScore(r.location, c.centerLocation) < 0.01); }
+};
+
+// ===== Supabase =====
+let supabaseClient = null, sbConnected = false, submissionLog = [];
+
+function connectSupabase() {
+  const url = document.getElementById('sbUrl').value.trim();
+  const key = document.getElementById('sbKey').value.trim();
+  const st = document.getElementById('sbStatus');
+  if (!url || !key) { st.innerHTML = '<span class="sb-status-dot bg-red-500"></span><span class="text-red-400">Enter both URL and Key</span>'; return; }
+  try {
+    supabaseClient = supabase.createClient(url, key);
+    sbConnected = true;
+    st.innerHTML = '<span class="sb-status-dot bg-emerald-400"></span><span class="text-emerald-300">Connected!</span>';
+    document.getElementById('sbDashLink').href = url.replace('/api', '').replace('.co', '.co/dashboard');
+    showToast('Connected to Supabase!');
+  } catch (e) {
+    sbConnected = false;
+    st.innerHTML = '<span class="sb-status-dot bg-red-500"></span><span class="text-red-400">Failed: ' + e.message + '</span>';
+  }
+}
+
+const SupabaseService = {
+  async submitReport(r) {
+    if (sbConnected) { const { data, error } = await supabaseClient.from('reports').insert([{ description: r.description, category: r.category, location: r.location, report_time: r.dateTime, user_id: r.userId || 'anonymous', photo_url: r.photoUrl || null }]).select(); if (error) throw error; return data[0]; }
+    return MockService.submitReport(r);
+  },
+  async getIssues() {
+    if (sbConnected) { const { data, error } = await supabaseClient.from('issues').select('*').order('updated_at', { ascending: false }); if (error) throw error; return data; }
+    return MockService.getIssues();
+  },
+  async uploadEvidence(id, file) {
+    if (sbConnected) { const fn = 'evidence/' + id + '/' + Date.now() + '_' + file.name; const { error } = await supabaseClient.storage.from('evidence').upload(fn, file); if (error) throw error; const { data } = supabaseClient.storage.from('evidence').getPublicUrl(fn); return data.publicUrl; }
+    return 'mock://' + Date.now();
+  },
+  async updateIssueStatus(id, s) {
+    if (sbConnected) { const { data, error } = await supabaseClient.from('issues').update({ status: s, updated_at: new Date().toISOString() }).eq('id', id).select(); if (error) throw error; return data[0]; }
+    return MockService.updateIssueStatus(id, s);
+  }
+};
+
+const MockService = {
+  reports: [],
+  issues: [{ id: 'issue-gate2', title: 'Streetlight Failure — Gate 2', category: 'streetlight', status: 'UNVERIFIED', totalReports: 1, independentReporters: 1, evidenceUploads: 0, centerLocation: { lat: 0, lng: 0 }, createdAt: '2024-09-12', updatedAt: '2024-10-01' }],
+  submitReport(r) { const nr = { id: 'r-' + Date.now(), ...r, createdAt: new Date().toISOString() }; this.reports.push(nr); return Promise.resolve(nr); },
+  getIssues() { return Promise.resolve(this.issues); },
+  uploadEvidence(id) { const i = this.issues.find(x => x.id === id); if (i) i.evidenceUploads++; return Promise.resolve('mock://' + Date.now()); },
+  updateIssueStatus(id, s) { const i = this.issues.find(x => x.id === id); if (i) i.status = s; return Promise.resolve(i); }
+};
+
+function updateMonitor() {
+  document.getElementById('monReports').textContent = MockService.reports.length;
+  document.getElementById('monIssues').textContent = MockService.issues.length;
+  const c = document.getElementById('recentSubs');
+  if (!submissionLog.length) { c.innerHTML = '<p class="text-xs text-slate-400 italic">No submissions yet</p>'; return; }
+  c.innerHTML = submissionLog.slice(-5).reverse().map(s =>
+    '<div class="flex items-center gap-2 bg-slate-50 rounded-lg p-2 text-xs"><i class="fas fa-' + (s.type === 'report' ? 'flag text-amber-500' : 'check-circle text-emerald-500') + '"></i><span class="flex-1 truncate text-slate-700">' + s.text + '</span><span class="mono text-[10px] text-slate-400">' + s.time + '</span></div>'
+  ).join('');
+}
+
+// ===== Demo =====
+let demoState = { reportCount: 1, reporterCount: 1, evidenceCount: 0, isMarkedFixed: false, hasPostResolutionCheck: false, status: 'UNVERIFIED' };
+
+function addStep(t) {
+  const l = document.getElementById('stepLog'), e = document.createElement('div');
+  e.className = 'step-entry'; e.innerHTML = '<span class="mono text-xs text-slate-400">[' + new Date().toLocaleTimeString() + ']</span> ' + t;
+  l.appendChild(e); l.scrollTop = l.scrollHeight;
+}
+
+function updateDemoUI() {
+  const el = document.getElementById('demoStatus');
+  const m = { UNVERIFIED: { c: 'badge-unver', l: 'UNVERIFIED' }, CORROBORATED: { c: 'badge-corrob', l: 'CORROBORATED' }, 'EVIDENCE-BACKED': { c: 'badge-evback', l: 'EVIDENCE-BACKED' }, RESOLVED: { c: 'badge-resol', l: 'RESOLVED' } };
+  const s = m[demoState.status]; el.className = 'badge ' + s.c; el.innerHTML = '<i class="fas fa-circle text-[8px]"></i> ' + s.l;
+  document.getElementById('demoReportCount').textContent = demoState.reportCount;
+  document.getElementById('demoReporterCount').textContent = demoState.reporterCount;
+  document.getElementById('demoEvidenceCount').textContent = demoState.evidenceCount;
+  document.getElementById('btnEvidence').disabled = demoState.status === 'UNVERIFIED';
+  document.getElementById('btnResolve').disabled = demoState.status !== 'EVIDENCE-BACKED';
+}
+
+function runSteps(steps, onDone) {
+  let i = 0;
+  const iv = setInterval(() => { if (i < steps.length) { addStep(steps[i]); i++; } else { clearInterval(iv); onDone(); } }, 550);
+}
+
+function demoIngestReports() {
+  const btn = document.getElementById('btnIngest'); btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+  runSteps([
+    'REPORT RECEIVED — 4 new reports ingested',
+    'AI EXTRACTING — Category: streetlight, Location: Gate 2',
+    'SIMILARITY DETECTION — NLP matching against existing cluster',
+    'CLUSTERING — 4 reports matched to cluster',
+    'INDEPENDENCE CHECK — 4 distinct users at 4 times',
+    'DUPLICATE CHECK — No duplicates. All independent.'
+  ], () => {
+    demoState.reportCount += 4; demoState.reporterCount += 4;
+    demoState.status = VerificationLogic.computeStatus(demoState.reportCount, demoState.reporterCount, demoState.evidenceCount, demoState.isMarkedFixed, demoState.hasPostResolutionCheck);
+    addStep('<strong class="text-civic-700">STATUS UPGRADED: ' + demoState.status + '</strong>');
+    updateDemoUI(); btn.disabled = false; btn.innerHTML = '<i class="fas fa-plus-circle mr-2"></i>Ingest 4 New Independent Reports';
+    showToast('Status upgraded to ' + demoState.status);
+  });
+}
+
+function demoAddEvidence() {
+  if (demoState.status === 'UNVERIFIED') return;
+  const btn = document.getElementById('btnEvidence'); btn.disabled = true;
+  runSteps([
+    'EVIDENCE UPLOAD — 3 photos received',
+    'CROSS-REFERENCING — Photos match cluster location',
+    'METADATA — Timestamps and geolocation verified',
+    'EVIDENCE COUNT: ' + (demoState.evidenceCount + 3)
+  ], () => {
+    demoState.evidenceCount += 3;
+    demoState.status = VerificationLogic.computeStatus(demoState.reportCount, demoState.reporterCount, demoState.evidenceCount, demoState.isMarkedFixed, demoState.hasPostResolutionCheck);
+    addStep('<strong class="text-emerald-600">STATUS UPGRADED: ' + demoState.status + '</strong>');
+    updateDemoUI(); btn.disabled = false; showToast('Status upgraded to ' + demoState.status);
+  });
+}
+
+function demoMarkResolved() {
+  if (demoState.status !== 'EVIDENCE-BACKED') return;
+  const btn = document.getElementById('btnResolve'); btn.disabled = true;
+  runSteps([
+    'MARKED FIXED — Authority marks issue resolved',
+    'POST-RESOLUTION CHECK — Citizen confirms fix',
+    'ACCOUNTABILITY LOOP CLOSED'
+  ], () => {
+    demoState.isMarkedFixed = true; demoState.hasPostResolutionCheck = true;
+    demoState.status = VerificationLogic.computeStatus(demoState.reportCount, demoState.reporterCount, demoState.evidenceCount, demoState.isMarkedFixed, demoState.hasPostResolutionCheck);
+    addStep('<strong class="text-blue-600">STATUS: ' + demoState.status + '</strong>');
+    updateDemoUI(); showToast('Issue resolved! Accountability loop closed.');
+  });
+}
+
+// ===== Report Form =====
+let selectedPhoto = null;
+
+function handlePhotoSelect(input) {
+  if (input.files && input.files[0]) {
+    selectedPhoto = input.files[0];
+    const r = new FileReader();
+    r.onload = e => { document.getElementById('previewImg').src = e.target.result; document.getElementById('photoPreview').classList.remove('hidden'); };
+    r.readAsDataURL(input.files[0]);
+  }
+}
+
+function clearPhoto() { selectedPhoto = null; document.getElementById('issuePhoto').value = ''; document.getElementById('photoPreview').classList.add('hidden'); }
+
+const dz = document.getElementById('dropZone');
+if (dz) {
+  dz.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('!border-civic-500', '!bg-civic-50'); });
+  dz.addEventListener('dragleave', () => dz.classList.remove('!border-civic-500', '!bg-civic-50'));
+  dz.addEventListener('drop', e => { e.preventDefault(); dz.classList.remove('!border-civic-500', '!bg-civic-50'); if (e.dataTransfer.files.length) { document.getElementById('issuePhoto').files = e.dataTransfer.files; handlePhotoSelect(document.getElementById('issuePhoto')); } });
+}
+
+function handleReportSubmit(e) {
+  e.preventDefault();
+  const report = { description: document.getElementById('issueDesc').value, category: document.getElementById('issueCat').value, location: document.getElementById('issueLoc').value, dateTime: document.getElementById('issueTime').value, userId: 'user-' + Math.random().toString(36).substr(2, 9), photoUrl: selectedPhoto ? 'pending' : null };
+  const ov = document.getElementById('processingOverlay'), stEl = document.getElementById('processingStep'), bar = document.getElementById('processingBar');
+  ov.classList.remove('hidden');
+  const pS = [{ t: 'REPORT RECEIVED', p: 15 }, { t: 'EXTRACTING INFORMATION', p: 30 }, { t: 'CHECKING SIMILARITY', p: 50 }, { t: 'MATCHING LOCATION', p: 65 }, { t: 'CHECKING INDEPENDENCE', p: 80 }, { t: 'UPDATING STATUS', p: 95 }, { t: 'COMPLETE', p: 100 }];
+  let si = 0;
+  const iv = setInterval(async () => {
+    if (si < pS.length) { stEl.textContent = pS[si].t; bar.style.width = pS[si].p + '%'; si++; }
+    else {
+      clearInterval(iv);
+      try {
+        await SupabaseService.submitReport(report);
+        ov.classList.add('hidden'); bar.style.width = '0%';
+        submissionLog.push({ type: 'report', text: report.description.substring(0, 40) + '...', time: new Date().toLocaleTimeString() });
+        updateMonitor(); showToast('Report submitted!'); document.getElementById('reportForm').reset(); clearPhoto();
+      } catch (err) { ov.classList.add('hidden'); showToast('Error: ' + err.message); }
+    }
+  }, 650);
+  return false;
+}
+
+// ===== DISHA CHATBOT =====
+let chatOpen = false;
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chatPanel').classList.toggle('open', chatOpen);
+  document.getElementById('chatDot').style.display = chatOpen ? 'none' : 'block';
+  if (chatOpen) document.getElementById('chatInput').focus();
+}
+
+const chatResponses = {
+  'hello': "Hello! I'm Disha, your guide to Civic Accountability. How can I help?",
+  'hi': "Hi! I can explain verification, help you navigate, or assist with reporting. What do you need?",
+  'how does this work': "Citizens submit complaints (allegations). Multiple independent reports → CORROBORATED. Add photos → EVIDENCE-BACKED. Fix confirmed → RESOLVED. Want me to walk you through the demo?",
+  'what is this': "Civic Accountability transforms isolated complaints into corroborated, evidence-backed accountability. We are NOT a truth detector — we are an evidence engine!",
+  'report': "I'll take you to the report form! Fill in the description, category, location, time, and optionally upload a photo.",
+  'complaint': "A complaint is an allegation — not a confirmed problem. It becomes corroborated when independent users report the same issue.",
+  'verify': "4 states: UNVERIFIED → CORROBORATED → EVIDENCE-BACKED → RESOLVED. Each upgrade needs more independent data and evidence. It's deterministic, never an opaque AI score.",
+  'dashboard': "The dashboard shows a unified view with metrics, timelines, evidence galleries, and status explanations. Let me take you there!",
+  'demo': "The live demo lets you simulate the full pipeline! Click 'Ingest 4 New Independent Reports' to see the status upgrade.",
+  'ai': "AI handles heuristics: extraction, categorization, similarity, summarization. Deterministic logic handles validation: proximity, independence, time overlap. AI does NOT determine truth.",
+  'supabase': "Our backend uses Supabase (PostgreSQL). Scroll to the Backend section to configure your URL and key. All data is stored there.",
+  'disha': "I'm Disha! I help you navigate Civic Accountability, understand verification, and report issues. What would you like to know?",
+  'who are you': "I'm Disha, your civic accountability guide! Ask me about the system, verification, reporting, or anything on this site.",
+  'independent': "Independence is key! 50 copied reports from one user = 1 observation. 4 reports from 4 different users = 4 independent observations with HIGH weight.",
+  'funnel': "The aggregation funnel: noisy reports → AI extraction → similarity detection → single accountable problem signal. 37 reports → 1 problem!",
+  'status': "Status is deterministic: UNVERIFIED (1 report), CORROBORATED (multiple independent reporters), EVIDENCE-BACKED (+ photos), RESOLVED (fixed + citizen check).",
+  'architecture': "AI heuristics (extraction, categorization) are separate from deterministic logic (proximity, independence, time overlap). This transparency is core to our philosophy.",
+  'flowchart': "The pipeline: Citizen Report → AI Extracts + Categorizes → Similarity Detection → Issue Clustering → Independence Check → Evidence Validation → Status Assigned.",
+  '3d': "There are two 3D models: the Hero model showing reports converging into evidence clusters with an AI robot, and the City model showing buildings, roads, potholes, streetlights, and reported issue areas. Both are interactive — rotate and zoom!",
+  'city': "The 3D city model shows buildings, roads with potholes, working and broken streetlights, and a pulsing teal area showing where citizens have reported issues. Scroll down to the 'Interactive 3D City' section!",
+  'thank': "You're welcome! Let me know if you have any other questions. I'm always here to help!",
+  'default': "I'm not sure I understood that. Try asking about: how the system works, verification, reporting, the dashboard, AI vs logic, independence, the demo, the 3D models, or Supabase."
+};
+
+const navActions = { 'report': '#report', 'dashboard': '#dashboard', 'demo': '#demo', 'city': '#citymodel' };
+
+function sendChat() {
+  const inp = document.getElementById('chatInput'), msg = inp.value.trim();
+  if (!msg) return; inp.value = '';
+  const ms = document.getElementById('chatMessages');
+  ms.innerHTML += '<div class="chat-msg user">' + escapeHtml(msg) + '</div>';
+  setTimeout(() => {
+    const low = msg.toLowerCase();
+    let resp = chatResponses.default, matched = false;
+    for (const [k, v] of Object.entries(chatResponses)) {
+      if (k === 'default') continue;
+      if (low.includes(k) || k.split(' ').some(w => w.length > 3 && low.includes(w))) { resp = v; matched = true; break; }
+    }
+    if (!matched && (low.includes('navigate') || low.includes('go to') || low.includes('take me') || low.includes('show me'))) {
+      for (const [k, h] of Object.entries(navActions)) { if (low.includes(k)) { document.querySelector(h)?.scrollIntoView({ behavior: 'smooth' }); resp = "Taking you there!"; matched = true; break; } }
+    }
+    if (!matched && low.includes('help')) { resp = "I can help with:\n• How the system works\n• Reporting an issue\n• Verification states\n• The demo\n• AI vs deterministic logic\n• Independence vs volume\n• The 3D city model\n• Supabase backend\nJust type a topic!"; }
+    if (matched) for (const [k, h] of Object.entries(navActions)) { if (low.includes(k)) setTimeout(() => document.querySelector(h)?.scrollIntoView({ behavior: 'smooth' }), 300); }
+    ms.innerHTML += '<div class="chat-msg bot">' + resp.replace(/\n/g, '<br>') + '</div>';
+    ms.scrollTop = ms.scrollHeight;
+  }, 350 + Math.random() * 250);
+}
+
+function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
+
+// ===== Toast =====
+function showToast(m) { const t = document.getElementById('toast'); t.textContent = m; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 3500); }
+
+// ===== Scroll Reveal =====
+const rObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }), { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+document.querySelectorAll('.reveal').forEach(el => rObs.observe(el));
+
+// ===== Counter =====
+const cObs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { const el = e.target; if (el.dataset.counted) return; el.dataset.counted = '1'; const tgt = parseInt(el.dataset.target); let c = 0; const inc = Math.ceil(tgt / 40); const tm = setInterval(() => { c += inc; if (c >= tgt) { c = tgt; clearInterval(tm); } el.textContent = c; }, 30); } }), { threshold: 0.5 });
+document.querySelectorAll('.counter').forEach(el => cObs.observe(el));
+
+// ===== Mobile Menu =====
+document.getElementById('mobileMenuBtn').addEventListener('click', () => document.getElementById('mobileMenu').classList.toggle('hidden'));
+document.querySelectorAll('#mobileMenu a').forEach(l => l.addEventListener('click', () => document.getElementById('mobileMenu').classList.add('hidden')));
+
+// ===== Nav shadow =====
+window.addEventListener('scroll', () => { document.querySelector('nav').style.boxShadow = window.scrollY > 100 ? '0 2px 12px rgba(0,0,0,.06)' : 'none'; }, { passive: true });
+
+// ===== Datetime default =====
+const now = new Date();
+document.getElementById('issueTime').value = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+
+// ===== Init =====
+updateDemoUI();
+updateMonitor();
+
+// Disha hint pulse
+setTimeout(() => { if (!chatOpen) document.getElementById('chatDot').style.animation = 'chatBounce 1s infinite'; }, 3000);
+</script>
+
+</body>
+</html>
